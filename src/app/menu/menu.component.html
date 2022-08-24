@@ -1,0 +1,197 @@
+<div class="top-menu">
+
+  <!--<div *ngIf="!isAuthenticated">-->
+  <!--NOT AUTHENTICATED HTML-->
+  <!--</div>-->
+
+  <div>
+    <button mat-button [matMenuTriggerFor]="fileMenu">File</button>
+
+    <div *ngxPermissionsOnly="['MENU_STATIC_DATA']" style="display: inline">
+      <button mat-button [matMenuTriggerFor]="staticDataMenu">Static Data</button>
+    </div>
+
+    <div *ngxPermissionsOnly="['MENU_RESEARCH']" style="display: inline">
+      <button mat-button [matMenuTriggerFor]="researchMenu">Research</button>
+    </div>
+
+    <div *ngxPermissionsOnly="['MENU_CONFIGURATION']" style="display: inline">
+      <button mat-button [matMenuTriggerFor]="configMenu">Configuration</button>
+    </div>
+
+    <mat-menu #configMenu="matMenu" [overlapTrigger]="false">
+
+      <div *ngxPermissionsOnly="['SYSTEM_PARAMETERS-R']">
+        <button mat-menu-item routerLink="/systemparameters">System Parameters</button>
+      </div>
+
+      <div *ngxPermissionsOnly="['USER_ACCOUNT_MAINTENANCE-R']">
+        <button mat-menu-item routerLink="/users">User account maintenance</button>
+      </div>
+
+      <div *ngxPermissionsOnly="['USER_GROUP_MAINTENANCE-R']">
+        <button mat-menu-item routerLink="/usergroups">User group maintenance</button>
+      </div>
+
+    </mat-menu>
+
+    <mat-menu #fileMenu="matMenu" [overlapTrigger]="false">
+      <button mat-menu-item >Exit</button>
+    </mat-menu>
+
+    <mat-menu #staticDataMenu="matMenu" [overlapTrigger]="false">
+
+      <button mat-menu-item [matMenuTriggerFor]="locationMenu">Locations and places</button>
+
+      <div *ngxPermissionsOnly="['MATERIAL_TYPES_R']">
+        <button mat-menu-item routerLink="/materialtypes">Material types</button>
+      </div>
+
+      <div *ngxPermissionsOnly="['MEASURE_TYPE-R']">
+        <button mat-menu-item routerLink="/measuretypes">Measure types</button>
+      </div>
+
+      <div *ngxPermissionsOnly="['REFERENCE_TYPE-R']">
+        <button mat-menu-item routerLink="/referencetypes">Reference types</button>
+      </div>
+
+      <!--      <div *ngxPermissionsOnly="['TALE_TYPE-R']">-->
+      <!--        <button mat-menu-item routerLink="/taletypes">Tale types</button>-->
+      <!--      </div>-->
+
+      <div *ngxPermissionsOnly="['MENU_TIME']">
+        <button mat-menu-item [matMenuTriggerFor]="timeMenu">Time</button>
+      </div>
+
+      <div>
+        <button mat-menu-item routerLink="/simple-refdata">Simple Reference Data</button>
+      </div>
+
+    </mat-menu>
+
+  </div>
+
+  <mat-menu #researchMenu="matMenu" [overlapTrigger]="false">
+
+    <button mat-menu-item [matMenuTriggerFor]="artefactMenu">Artefacts</button>
+
+    <button mat-menu-item [matMenuTriggerFor]="bibliographyMenu">Bibliographies and publications</button>
+
+
+
+    <button mat-menu-item [matMenuTriggerFor]="eventMenu">Events</button>
+
+    <button mat-menu-item routerLink="/images">Images</button>
+
+    <button mat-menu-item [matMenuTriggerFor]="languageMenu">Languages</button>
+
+    <button mat-menu-item routerLink="/materials">Materials</button>
+    <button mat-menu-item routerLink="/measures">Measures</button>
+    <button mat-menu-item routerLink="/patterns">Patterns</button>
+
+    <button mat-menu-item [matMenuTriggerFor]="peopleMenu">People</button>
+
+    <button mat-menu-item routerLink="/references">References</button>
+    <button mat-menu-item [matMenuTriggerFor]="religionMenu">Religions and belief systems</button>
+    <button mat-menu-item routerLink="/tales">Tales</button>
+
+    <button mat-menu-item [matMenuTriggerFor]="technologyMenu">Technology</button>
+
+    <button mat-menu-item [matMenuTriggerFor]="theoryMenu">Theories</button>
+  </mat-menu>
+
+  <mat-menu #artefactMenu="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item routerLink="/artefacts">Artefact</button>
+    <button mat-menu-item routerLink="/artefactattributetypes">Artefact attribute types</button>
+    <button mat-menu-item routerLink="/artefactgroups">Artefact groups</button>
+    <button mat-menu-item routerLink="/artefacttypes">Artefact types</button>
+  </mat-menu>
+
+  <mat-menu #bibliographyMenu="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item routerLink="/bibliographies">Bibliographies</button>
+    <button mat-menu-item routerLink="/bibliographypublications">Bibliography publications</button>
+    <button mat-menu-item routerLink="/publications">Publications</button>
+  </mat-menu>
+
+  <mat-menu #eventMenu="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item routerLink="/events">Events</button>
+    <button mat-menu-itngxpermissionsonlyem routerLink="/eventattributetypes">Event attribute types</button>
+    <button mat-menu-item routerLink="/eventtypegroups">Event type groups</button>
+  </mat-menu>
+
+  <mat-menu #languageMenu="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item routerLink="/languages">Languages</button>
+    <button mat-menu-item routerLink="/languagegroups">Language groups</button>
+  </mat-menu>
+
+  <mat-menu #locationMenu="matMenu" [overlapTrigger]="false">
+    <div *ngxPermissionsOnly="['COUNTRY-R']">
+      <button mat-menu-item routerLink="/countries">Countries</button>
+    </div>
+    <div *ngxPermissionsOnly="['LIBRARY_LOCATION-R']">
+      <button mat-menu-item routerLink="/librarylocations">Library locations</button>
+    </div>
+    <div *ngxPermissionsOnly="['PLACE-R']">
+      <button mat-menu-item routerLink="/places">Places</button>
+    </div>
+    <div *ngxPermissionsOnly="['REGION-R']">
+      <button mat-menu-item routerLink="/regions">Regions</button>
+    </div>
+    <div *ngxPermissionsOnly="['RIVER-R']">
+      <button mat-menu-item routerLink="/rivers">Rivers</button>
+    </div>
+  </mat-menu>
+
+  <mat-menu #peopleMenu [overlapTrigger]="false">
+    <button mat-menu-item routerLink="/hierarchies">Hierarchies</button>
+    <button mat-menu-item routerLink="/hierarchytypes">Hierarchy types</button>
+    <button mat-menu-item routerLink="/persons">Persons</button>
+    <!--    <button mat-menu-item routerLink="/persontypes">Person types</button>-->
+    <button mat-menu-item routerLink="/races">Races</button>
+    <button mat-menu-item routerLink="/racetypes">Race types</button>
+    <button mat-menu-item routerLink="/titles">Titles</button>
+  </mat-menu>
+
+  <mat-menu #religionMenu="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item routerLink="/deities">Deities</button>
+    <button mat-menu-item routerLink="/deitytypes">Deity types</button>
+    <button mat-menu-item routerLink="/religions">Religions</button>
+  </mat-menu>
+
+  <mat-menu #technologyMenu="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item routerLink="/technologies">Technologies</button>
+    <button mat-menu-item routerLink="/technologytypes">Technology types</button>
+    <button mat-menu-item routerLink="/technologytypegroups">Technology type groups</button>
+  </mat-menu>
+
+  <mat-menu #theoryMenu="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item routerLink="/theories">Theories</button>
+  </mat-menu>
+
+  <mat-menu #timeMenu="matMenu" [overlapTrigger]="false">
+    <button mat-menu-item routerLink="/calendars">Calendars</button>
+    <button mat-menu-item routerLink="/calendartypes">Calendar types</button>
+    <button mat-menu-item routerLink="/periods">Periods</button>
+  </mat-menu>
+
+  <div *ngIf="!isAuthenticated" class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <ul class="navbar-nav mr-auto">
+
+      <!--<li class="nav-item active">-->
+      <!--<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
+      <!--</li>-->
+
+      <!--<li class="nav-item">-->
+      <!--<a class="nav-link" href="#">Link</a>-->
+      <!--</li>-->
+
+      <li class="nav-item">
+        <a [routerLink]="['/login']" class="nav-link navbar-right" href="#">Login</a>
+      </li>
+
+    </ul>
+
+  </div>
+
+</div>

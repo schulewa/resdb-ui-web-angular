@@ -1,0 +1,93 @@
+<div class="page-header">
+  <h1>Simple Reference Data Maintenance</h1>
+</div>
+
+<div class=" w-100 h-100">
+
+  <div class="row">
+
+    <label>Select the type of data to maintain from the dropdown list:</label>
+
+    <div class="col-md-6">
+
+      <form class="form-horizontal col-md-12" [formGroup]="refDataTypeForm" (change)="onChangedRefDataType($event)" role="form">
+
+        <div class="row">
+
+          <div class="col-md-4">
+            <select formControlName="refDataType">
+              <option>Please select</option>
+              <option>Address type</option>
+              <option>Artefact group</option>
+              <option>Artefact type</option>
+              <option>Calendar type</option>
+              <option>Deity type</option>
+              <option>Entity type</option>
+              <option>Event type group</option>
+              <option>Hierarchy type</option>
+              <option>Image type</option>
+              <option>Language group</option>
+              <option>Measure type</option>
+              <option>Person type</option>
+              <option>Publication type</option>
+              <option>Race type</option>
+              <option>Tale type</option>
+              <option>Technology type group</option>
+            </select>
+
+          </div>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div *ngIf="!disableRefDataTypeSubmit()">
+
+      <div [ngSwitch]="refDataTypeForm!.controls['refDataType']">
+
+        <app-address-type *ngIf="isAddressTypeDataRefType()"></app-address-type>
+
+        <app-artefact-group *ngIf="isArtefactGroupDataRefType()"></app-artefact-group>
+
+        <app-artefact-type *ngIf="isArtefactTypeDataRefType()"></app-artefact-type>
+
+        <app-calendar-type *ngIf="isCalendarTypeDataRefType()"></app-calendar-type>
+
+        <app-deity-type *ngIf="isDeityTypeDataRefType()"></app-deity-type>
+
+        <app-entity-type *ngIf="isEntityTypeDataRefType()"></app-entity-type>
+
+        <app-event-type-group *ngIf="isEventTypeGroupDataRefType()"></app-event-type-group>
+
+        <app-hierarchy-type *ngIf="isHierarchyTypeDataRefType()"></app-hierarchy-type>
+
+        <app-image-type *ngIf="isImageTypeDataRefType()"></app-image-type>
+
+        <app-language-group *ngIf="isLanguageGroupDataRefType()"></app-language-group>
+
+        <app-measure-type *ngIf="isMeasureTypeDataRefType()"></app-measure-type>
+
+        <app-person-type *ngIf="isPersonTypeDataRefType()"></app-person-type>
+
+        <app-publication-type *ngIf="isPublicationTypeDataRefType()"></app-publication-type>
+
+        <app-race-type *ngIf="isRaceTypeDataRefType()"></app-race-type>
+
+        <app-tale-type *ngIf="isTaleTypeDataRefType()"></app-tale-type>
+
+        <app-technology-type-group *ngIf="isTechnologyTypeGroupDataRefType()"></app-technology-type-group>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>
