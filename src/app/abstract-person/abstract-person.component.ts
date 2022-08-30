@@ -13,6 +13,7 @@ import {DateLabelValue} from "../model/dto/DateLabelValue";
 import {TitleType} from "../model/enums/title-type";
 import {Constants} from "../model/constants";
 import {hasFormFieldChanged} from "../utils/form-utils";
+import {DataAction} from "../model/enums/data-action";
 
 @Component({
   selector: 'app-abstract-person',
@@ -27,12 +28,14 @@ export abstract class AbstractPersonComponent implements OnInit {
   protected person: Person | undefined
   protected personForm: FormGroup | undefined;
 
+  protected filteredTitles: Title[] = [];
   protected selectedTitle: Title | undefined;
   protected selectedTitles: Title[] = [];
 
   protected allGenders: CodeLabel[] = [];
-  protected selectedGenderCodeLabel: CodeLabel | undefined;
+  protected filteredGenders: CodeLabel[] = [];
   protected gender: Gender | undefined;
+  protected selectedGenderCodeLabel: CodeLabel | undefined;
 
   protected allTitleTypes: CodeLabel[] = [];
   protected selectedTitleTypeLabel: CodeLabel | undefined;
@@ -40,8 +43,6 @@ export abstract class AbstractPersonComponent implements OnInit {
   protected allTitles: Title[] = [];
 
   public rowSelectionMode = 'single';
-  // selectedTitle: Title | undefined;
-  // selectedTitles: Title[] = [];
 
   protected titlesGridApi: GridApi | undefined;
   protected titlesColumnDefs: ColDef[] = [];
@@ -66,11 +67,64 @@ export abstract class AbstractPersonComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('app-abstract-person: ngOnInit');
     this.initPersonForm();
   }
 
+  // apply all values from Person that dod not rely on GridApi such as titlesGridApi
+  // as onGridReady is called after ngOnInit
   protected applyPerson(existingPerson: Person) {
+    console.log('app-abstract-person.applyPerson: existingPerson.titles length=' + existingPerson.titles.length);
+      this.getPersonForm().controls['firstName'].patchValue(existingPerson.firstName, { emitEvent: false });
+      this.getPersonForm().controls['middleName'].patchValue(existingPerson.middleName, { emitEvent: false });
+      this.getPersonForm().controls['familyName'].patchValue(existingPerson.familyName, { emitEvent: false });
+      this.getPersonForm().controls['gender'].patchValue(existingPerson.gender, { emitEvent: false });
+      //
+      existingPerson.titles.forEach((personTitle) => this.logPersonTitle(personTitle));
+      this.getPersonForm().controls['titles'].patchValue(existingPerson.titles, {emitEvent: false});
 
+      this.getPersonForm().controls['dateOfBirthDayOfMonth'].patchValue(existingPerson.dateOfBirth?.day)
+      this.getPersonForm().controls['dateOfBirthMonth'].patchValue(existingPerson.dateOfBirth?.month)
+      this.getPersonForm().controls['dateOfBirthYear'].patchValue(existingPerson.dateOfBirth?.year)
+
+    this.getPersonForm().controls['dateOfDeathDayOfMonth'].patchValue(existingPerson.dateOfDeath?.day)
+    this.getPersonForm().controls['dateOfDeathMonth'].patchValue(existingPerson.dateOfDeath?.month)
+    this.getPersonForm().controls['dateOfDeathYear'].patchValue(existingPerson.dateOfDeath?.year)
+
+    if (existingPerson.titles?.length > 0) {
+      this.selectedTitles = [];
+      for (const personTitle of existingPerson.titles) {
+        if (personTitle != null && personTitle.title != null) {
+          this.selectedTitles.push(personTitle.title!);
+        }
+      }
+      this.selectedTitles.forEach((title) => this.logTitle(title));
+    }
+
+    if (existingPerson.birthPlace) {
+      this.getPersonForm().controls['birthPlaceName'].patchValue(existingPerson.birthPlace.name)
+      this.getPersonForm().controls['birthPlaceAltitude'].patchValue(existingPerson.birthPlace.altitude)
+      this.getPersonForm().controls['birthPlaceLatitude'].patchValue(existingPerson.birthPlace.latitude)
+      this.getPersonForm().controls['birthPlaceLongitude'].patchValue(existingPerson.birthPlace.longitude)
+    }
+
+    if (existingPerson.deathPlace) {
+      this.getPersonForm().controls['deathPlaceName'].patchValue(existingPerson.deathPlace.name)
+      this.getPersonForm().controls['deathPlaceAltitude'].patchValue(existingPerson.deathPlace.altitude)
+      this.getPersonForm().controls['deathPlaceLatitude'].patchValue(existingPerson.deathPlace.latitude)
+      this.getPersonForm().controls['deathPlaceLongitude'].patchValue(existingPerson.deathPlace.longitude)
+    }
+  }
+
+  protected logPersonTitle(personTitle: PersonTitle) {
+    console.log('app-abstract-person.logPersonTitle: personTitle ' +
+        ' name=' + [personTitle.person?.firstName, personTitle.person?.middleName, personTitle.person?.familyName].join(' ') +
+        ' title=' + personTitle.title?.title + ' ' + personTitle.title?.titleType + ' ' + personTitle.title?.appliesTo);
+  }
+
+  protected logTitle(title: Title) {
+    console.log('app-abstract-person.logTitle: title ' +
+      ' title=' + title.title + ' titleType=' + title.titleType + ' appliesTo=' + title.appliesTo);
   }
 
   protected closeForm() {
@@ -154,6 +208,15 @@ export abstract class AbstractPersonComponent implements OnInit {
       unSortIcon: true
     };
   }
+
+  protected filterTitles(): Title[] {
+    return this.allTitles.filter(title =>
+      // this.gender.current !== this.gender.UNKNOWN && title.appliesTo === this.gender
+      this.gender !== undefined && title.appliesTo === this.gender &&
+      this.selectedTitleTypeLabel !== undefined && title.titleType === this.selectedTitleTypeLabel.getLabel()
+    );
+  }
+
   protected getDateOfBirthDay(): number {
     return <number>this.person?.dateOfBirth?.day;
   }
@@ -188,18 +251,18 @@ export abstract class AbstractPersonComponent implements OnInit {
   }
 
   protected getTitles(): Title[] {
-    console.log('app-edit-person.getTitles: start');
+    console.log('app-abstract-person.getTitles: start');
 
     this.selectedTitles = [];
     if (!this.person?.titles) {
       return this.selectedTitles;
     }
 
-    console.log('app-edit-person.getTitles: no of person titles = ' + this.person.titles.length);
+    console.log('app-abstract-person.getTitles: no of person titles = ' + this.person.titles.length);
 
     for (const datum in this.person.titles) {
       if (this.person.titles.hasOwnProperty(datum)) {
-        console.log('app-edit-person.getTitles: map PersonTitle to Title');
+        console.log('app-abstract-person.getTitles: map PersonTitle to Title');
         const personTitle: PersonTitle = this.person.titles[datum];
 
         if (personTitle != null && personTitle.title != null) {
@@ -216,7 +279,7 @@ export abstract class AbstractPersonComponent implements OnInit {
           title.selected = personTitle.title.selected;
           title.action = personTitle.title.action;
           title.isDataChanged = personTitle.title.isDataChanged;
-          console.log('app-edit-person.getTitles: constructed Title = ' + title.title);
+          console.log('app-abstract-person.getTitles: constructed Title = ' + title.title);
           this.selectedTitles.push(title);
         }
       }
@@ -238,7 +301,7 @@ export abstract class AbstractPersonComponent implements OnInit {
     //         isDataChanged: personTitle.title.isDataChanged
     //     });
 
-    console.log('app-edit-person.getTitles: end');
+    console.log('app-abstract-person.getTitles: end');
 
     return this.selectedTitles;
   }
@@ -251,8 +314,12 @@ export abstract class AbstractPersonComponent implements OnInit {
     return hasFormFieldChanged(this.getPersonForm(), 'firstName');
   }
 
+  protected hasFamilyNameFieldChanged() {
+    return hasFormFieldChanged(this.getPersonForm(), 'familyName');
+  }
+
   protected initAllDatesCodeLabels() {
-    console.log('app-edit-person: calling initAllDatesCodeLabels');
+    console.log('app-abstract-person: calling initAllDatesCodeLabels');
     this.allDatesLabelValues = [];
 
     const dobLabel = new CodeLabel('DOB', 'Date of birth');
@@ -264,11 +331,11 @@ export abstract class AbstractPersonComponent implements OnInit {
     this.allDatesLabelValues.push(dob);
     this.allDatesLabelValues.push(dod);
 
-    console.log('app-edit-person.initAllDatesCodeLabels: allDatesLabelValues=' + this.allDatesLabelValues);
+    console.log('app-abstract-person.initAllDatesCodeLabels: allDatesLabelValues=' + this.allDatesLabelValues);
   }
 
   protected initGenders() {
-    console.log('app-edit-person: calling initGenders');
+    console.log('app-abstract-person: calling initGenders');
     const thisRef = this;
     this.gender = new Gender();
     this.allGenders = [];
@@ -307,14 +374,14 @@ export abstract class AbstractPersonComponent implements OnInit {
   }
 
   protected initTitles() {
-    console.log('abstract-person: calling initTitles');
+    console.log('app-abstract-person: calling initTitles');
     this.titlesService.findAll().subscribe(
       data => {
         this.allTitles = data;
         this.httpError = undefined;
       },
       err => {
-        console.error('app-edit-person.findAll: err=', err);
+        console.error('app-abstract-person.findAll: err=', err);
         this.httpError = err;
       }
     );
@@ -339,26 +406,37 @@ export abstract class AbstractPersonComponent implements OnInit {
     this.selectedTitleTypeLabel = pleaseSelect;
   }
 
-  protected onChangeGender() {
-    console.log('app-edit-person: onChangeGender - form control gender=' + this.getPersonForm()!.controls['gender'].value);
-    const selected: CodeLabel = this.getPersonForm()!.controls['gender'].value; // results in 'selected' of string NOT CodeLabel
-    const thisRef = this;
+  onTitlesCellValueChanged(event: any) {
+    // handle updated 'name' value
+    console.log('onTitlesCellValueChanged - entry: event=' + event);
+    if (event.data && event.data.id && event.data.id > 0) {
+      event.data.action = DataAction.Update;
+      this.titlesGridApi!.refreshCells();
+    }
+  }
+
+  protected onChangeGender(event: any) {
+    console.log('app-abstract-person: onChangeGender - event=' + event);
+    console.log('app-abstract-person: onChangeGender - form control gender=' + this.getPersonForm().controls['gender'].value);
+    const selected: CodeLabel = this.getPersonForm()!.controls['gender'].value.gender; // results in 'selected' of string NOT CodeLabel
+    this.selectedGenderCodeLabel = selected
+    const selectedGender = Gender.fromCodeLabel(this.selectedGenderCodeLabel)
     // this.gender.current = selected;
 
-    // if (selected) {
-    //     if (this.gender.isMale(selected) || this.gender.isFemale(selected)) {
-    //         this.filteredGenders = this.allGenders.filter(gender => gender === selected);
-    //         // this.filteredTitles = this.allTitles.filter(title => title.appliesTo === this.gender);
-    //         this.filteredTitles = this.filterTitles();
-    //         console.log('onChangeGender: filteredGenders size = ', this.filteredGenders.length);
-    //     }
-    //     console.log('onChangeGender 1: TRUE selected=', selected, ' selected=', selected);
-    // }
+    if (selectedGender) {
+        if (selectedGender.isMale(selected) || selectedGender.isFemale(selected)) {
+            this.filteredGenders = this.allGenders.filter(gender => gender === selected);
+            // this.filteredTitles = this.allTitles.filter(title => title.appliesTo === this.gender);
+            this.filteredTitles = this.filterTitles();
+            console.log('onChangeGender: filteredGenders size = ', this.filteredGenders.length);
+        }
+        console.log('onChangeGender 1: TRUE selected=', selected, ' selected=', selected);
+    }
   }
 
   protected onChangeTitle() {
     const selected: Title = this.getPersonForm()!.controls['title'].value;
-    console.log('app-edit-person.onChangeTitle: new title=' + selected);
+    console.log('app-abstract-person.onChangeTitle: new title=' + selected);
     this.selectedTitle = selected;
   }
 
@@ -366,16 +444,49 @@ export abstract class AbstractPersonComponent implements OnInit {
     this.selectedTitleTypeLabel = this.getPersonForm()!.controls['titleType'].value;
   }
 
+  onTitlesGridReady(params: any) {
+    console.log('app-abstract-person: onTitlesGridReady');
+    this.reloadTitles();
+    if (this.titlesGridApi) {
+      var params: any = {
+        force: false,
+        suppressFlash: true,
+      };
+      this.titlesGridApi!.refreshCells(params);
+    }
+  }
+
   protected onRowSelectedTitle(event: any) {
     const title: Title = event.node.selected;
     event.data.selected = event.node.selected;
-    console.log('app-edit-person.onRowSelectedTitle: title=' + title);
+    console.log('app-abstract-person.onRowSelectedTitle: title=' + title);
     // this.selectedTitles = this.titlesGridApi.getSelectedRows();
   }
 
   protected onRowSelectedTitleChanged(event: any) {
     const title: Title = event.node.selected;
-    console.log('app-edit-person.onRowSelectedTitleChanged: title=' + title);
+    console.log('app-abstract-person.onRowSelectedTitleChanged: title=' + title);
     // this.selectedTitles = this.titlesGridApi.getSelectedRows();
   }
+
+  protected reloadTitles() {
+    console.log('app-abstract-person: reloadTitles - person titles length = ' + this.person?.titles?.length);
+    if (this.person?.titles && this.person?.titles?.length > 0) {
+        // this.selectedTitles = []
+        // for (let i=0; i < this.person.titles.length; i++) {
+        //   const personTitle = this.person.titles[i] as PersonTitle;
+        //   if (personTitle != null && personTitle.title != null) {
+        //     console.log('app-abstract-person: reloadTitles - title=' + personTitle.title.title + ' titleType=' + personTitle.title.titleType + ' appliesTo=' + personTitle.title.appliesTo);
+        //     const currentTitle = personTitle.title as Title;
+        //     // const currentTitleType = personTitle.title.titleType as TitleType;
+        //     console.log('app-abstract-person: reloadTitles - currentTitle title=' + currentTitle.title + ' titleType=' + currentTitle.titleType?.toString());
+        //     this.selectedTitles.push(personTitle.title);
+        //   }
+        // }
+      // this.selectedTitles = this.person?.titles?.map((title) => title?.title);
+        console.log('applyPerson: selectedTitles=' + this.selectedTitles);
+        this.getPersonForm().controls['titles'].patchValue(this.selectedTitles, {emitEvent: false});
+      }
+  }
+
 }

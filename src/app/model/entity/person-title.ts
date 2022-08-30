@@ -26,4 +26,26 @@ export class PersonTitle {
     this.action = DataAction.Add;
     this.isDataChanged = false;
   }
+
+  public toString(): string {
+    let personAsString = 'Person []';
+    if (this.person) {
+      console.log('PersonTitle.person: ' + this.person.toString());
+      personAsString = 'Person [' +
+        'firstName=' + this.person.firstName + ' ' +
+        'middleName=' + this.person.middleName + ' ' +
+        'familyName=' + this.person.familyName
+      + ']';
+    }
+
+    let titleAsString = 'Title []';
+    if (this.title) {
+      console.log('PersonTitle.title: ' + this.title.toString());
+      titleAsString = 'Title [' +
+        'title=' + this.title.title + ' ' +
+        'titleType=' + this.title.titleType
+      + ']';
+    }
+    return personAsString + "\n" + titleAsString;
+  }
 }

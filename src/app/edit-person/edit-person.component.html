@@ -3,88 +3,114 @@
   <h3>Existing person: {{person.firstName}} {{person.familyName}}</h3>
 </div>
 
-<div>
+<div style="margin-left: 10px;">
 
-  <form class="form-horizontal login-form col-md-12" [formGroup]="this.getPersonForm()">
+  <form class="form-horizontal login-form col-sm-12" [formGroup]="this.getPersonForm()">
 
-    <div class="form-row">
+    <div class="row">
 
-      <label class="col-md-1 col-form-label text-right" for="firstName">First name</label>
-      <input type="text" id="firstName" name="firstName" formControlName="firstName"
-             maxlength="30"
-             class="form-control col-md-2"/>
+      <div class="col-sm-12 d-inline-flex">
 
-      <div
-        *ngIf="this.hasFirstNameFieldChanged()"
-        class="alert alert-danger">
-        First name must be provided
+        <label
+          class="col-sm-1 form-label text-right"
+          style="margin-right: -10px;"
+          for="firstName">First name</label>
+
+        <input type="text" id="firstName" name="firstName"
+               formControlName="firstName"
+               maxlength="30" size="30"
+               class="form-control col-sm-3"
+               style="width: 10%" />
+
+        <div
+          *ngIf="this.hasFirstNameFieldChanged()"
+          class="alert alert-danger">
+          First name must be provided
+        </div>
+
+        <label
+          class="col-sm-1 form-label text-right"
+          style="margin-left: 20px; margin-right: 10px;"
+          for="middleName">Middle Name</label>
+
+        <input type="text" id="middleName" name="middleName"
+               formControlName="middleName"
+               maxlength="30" size="30"
+               class="form-control col-sm-3"
+               style="width: 10%" />
+
+        <label
+          class="col-sm-1 form-label text-right"
+          style="margin-left: 20px; margin-right: -10px;"
+          for="familyName">Family name</label>
+
+        <input type="text" id="familyName" name="familyName" formControlName="familyName"
+               maxlength="50" size="30"
+               class="form-control col-sm-3"
+               style="width: 10%" />
+
+        <div
+          *ngIf="this.hasFamilyNameFieldChanged()"
+          class="alert alert-danger">
+          Family name must be provided
+        </div>
+
       </div>
 
-      <label class="col-md-2 col-form-label text-right" for="middleName">Middle Name</label>
-      <input type="text" id="middleName" name="middleName" formControlName="middleName"
-             maxlength="30"
-             class="form-control col-md-2"/>
+    </div>
 
-      <label class="col-md-2 col-form-label text-right" for="familyName">Family name</label>
-      <input type="text" id="familyName" name="familyName" formControlName="familyName"
-             maxlength="50"
-             class="form-control col-md-2"/>
-      <div
-        *ngIf="this.hasFirstNameFieldChanged()"
-        class="alert alert-danger">
-        First name must be provided
+    <div class="row" style="margin-top: 20px">
+
+      <div class="col-sm-9 d-inline-flex">
+
+        <label
+          class="col-sm-1 form-label text-right"
+          style="margin-right: 20px;">Gender</label>
+
+        <select id="gender" name="gender"
+                formControlName="gender"
+                style="width: 10%"
+                (change)="onChangeGender($event)">
+          <option *ngFor="let gender of getGenders()" [value]="gender" [selected]="gender.label===this.person?.gender">
+            {{gender.label}}
+          </option>
+        </select>
+
       </div>
 
     </div>
 
-    <div class="form-row" style="margin-top: 20px">
+    <div id="titles-grid-panel" class="row" style="margin-top: 20px;">
 
-      <label class="col-md-1 col-form-label text-right">Gender</label>
-      <!--            <select id="gender" name="gender" formControlName="gender" (change)="onChangeGender()">-->
-      <!--                <option *ngFor="let gender of getGenders()" [value]="gender" [selected]="gender===this.person.gender">-->
-      <!--                    {{gender.label}}-->
-      <!--                </option>-->
-      <!--            </select>-->
-      <select id="gender" name="gender" formControlName="gender" (change)="onChangeGender()">
-        <option *ngFor="let gender of getGenders()" [value]="gender" [selected]="gender.label===this.person?.gender">
-          {{gender}}
-        </option>
-      </select>
+      <div style="margin-left: -10px;">
 
-      <!--            <label class="col-md-2 col-form-label text-right">Title Type</label>-->
-      <!--            <select id="titleType" name="titleType" formControlName="titleType" (change)="onChangeTitleType()">-->
-      <!--                <option *ngFor="let titleType of getTitleTypes()" [value]="titleType">{{titleType.label}}</option>-->
-      <!--            </select>-->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Titles</mat-panel-title>
+            <mat-panel-description>
+              Maintain the list of selected titles for this person. Use checkbox to set titles for person.
+              These will be committed when details are saved.
+            </mat-panel-description>
+          </mat-expansion-panel-header>
 
-    </div>
+          <!-- display checkbox per title-->
+          <ag-grid-angular style="width: 100%; height: 250px;"
+                           class="ag-theme-balham"
+                           [rowData]="this.selectedTitles"
+                           (rowSelected)="onRowSelectedTitle($event)"
+                           (selectionChanged)="onRowSelectedTitleChanged($event)"
+                           (cellValueChanged)="onTitlesCellValueChanged($event)"
+                           [columnDefs]="createTitlesColumnDefs()"
+                           (gridReady)="onTitlesGridReady($event)">
+          </ag-grid-angular>
 
-    <div class="form-row" style="margin-top: 20px;">
+        </mat-expansion-panel>
 
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Titles</mat-panel-title>
-          <mat-panel-description>
-            Maintain the list of selected titles for this person. Use checkbox to set titles for person.
-            These will be committed when details are saved.
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <!-- display checkbox per title-->
-        <!--  [rowSelection]="rowSelectionMode"-->
-        <ag-grid-angular style="width: 100%; height: 250px;"
-                         class="ag-theme-balham"
-                         [rowData]="selectedTitles"
-
-                         (rowSelected)="onRowSelectedTitle($event)"
-                         (selectionChanged)="onRowSelectedTitleChanged($event)"
-                         [columnDefs]="createTitlesColumnDefs()">
-        </ag-grid-angular>
-
-      </mat-expansion-panel>
+      </div>
 
     </div>
 
-    <!--        <div class="form-row" style="margin-top: 20px;">-->
+    <!--        <div class="row" style="margin-top: 20px;">-->
 
     <!--            <mat-expansion-panel>-->
     <!--                <mat-expansion-panel-header>-->
@@ -109,141 +135,210 @@
 
     <!--        </div>-->
 
-    <div class="form-row " style="margin-top: 20px;">
+    <div class="row " style="margin-top: 20px;">
 
-      <label class="col-md-12 col-form-label" style="margin-top: 20px;">Date of birth</label>
+      <label class="col-sm-12 form-label" style="margin-top: 20px;">Date of birth</label>
 
-      <label for="dateOfBirthDayOfMonth"
-             class="col-md-1 col-form-label text-right"
-             style="margin-right: 20px;">Day</label>
-      <input id="dateOfBirthDayOfMonth" name="dateOfBirthDayOfMonth"
-             formControlName="dateOfBirthDayOfMonth"
-             type="number" min="0"
-             class="form-control col-md-1"/>
+      <div class="col-sm-9 d-inline-flex">
 
-      <label for="dateOfBirthMonth"
-             class="col-md-1 col-form-label text-right"
-             style="margin-left: 20px; margin-right: 20px;">Month</label>
-      <input id="dateOfBirthMonth" name="dateOfBirthMonth"
-             formControlName="dateOfBirthMonth"
-             type="number" min="0"
-             class="form-control col-md-1"/>
+        <label for="dateOfBirthDayOfMonth"
+               class="col-sm-1 form-label text-right"
+               style="margin-right: 20px;">Day</label>
 
-      <label for="dateOfBirthYear"
-             class="col-md-1 col-form-label text-right"
-             style="margin-left: 20px; margin-right: 20px;">Year</label>
-      <input id="dateOfBirthYear" name="dateOfBirthYear"
-             formControlName="dateOfBirthYear"
-             type="number" min="0"
-             class="form-control col-md-1"/>
+        <input id="dateOfBirthDayOfMonth" name="dateOfBirthDayOfMonth"
+               formControlName="dateOfBirthDayOfMonth"
+               type="number" min="0"
+               maxlength="2" size="2"
+               class="form-control col-sm-2" style="width: 10%" />
 
-    </div>
+        <label for="dateOfBirthMonth"
+               class="col-sm-1 form-label text-right"
+               style="margin-left: 20px; margin-right: 20px;">Month</label>
 
-    <div class="form-row" style="margin-top: 20px;">
+        <input id="dateOfBirthMonth" name="dateOfBirthMonth"
+               formControlName="dateOfBirthMonth"
+               type="number" min="0"
+               maxlength="2" size="2"
+               class="form-control col-sm-2" style="width: 10%" />
 
-      <label class="col-md-12 col-form-label" style="margin-top: 20px;">Date of death</label>
+        <label for="dateOfBirthYear"
+               class="col-sm-1 form-label text-right"
+               style="margin-left: 20px; margin-right: 20px;">Year</label>
 
-      <label for="dateOfDeathDayOfMonth"
-             class="col-md-1 col-form-label text-right"
-             style="margin-right: 20px;">Day</label>
-      <input id="dateOfDeathDayOfMonth" name="dateOfDeathDayOfMonth"
-             formControlName="dateOfDeathDayOfMonth"
-             type="number" min="0"
-             class="form-control col-md-1"/>
+        <input id="dateOfBirthYear" name="dateOfBirthYear"
+               formControlName="dateOfBirthYear"
+               type="number" min="0"
+               maxlength="4" size="4"
+               class="form-control col-sm-2" style="width: 10%" />
 
-      <label for="dateOfDeathMonth"
-             class="col-md-1 col-form-label text-right"
-             style="margin-left: 20px; margin-right: 20px;">Month</label>
-      <input id="dateOfDeathMonth" name="dateOfDeathMonth"
-             formControlName="dateOfDeathMonth"
-             type="number" min="0"
-             class="form-control col-md-1"/>
-
-      <label for="dateOfDeathYear"
-             class="col-md-1 col-form-label text-right"
-             style="margin-left: 20px; margin-right: 20px;">Year</label>
-      <input id="dateOfDeathYear" name="dateOfDeathYear"
-             formControlName="dateOfDeathYear"
-             type="number" min="0"
-             class="form-control col-md-1"/>
+      </div>
 
     </div>
 
-    <!-- birth place -->
-    <div class="form-row" style="margin-top: 20px;">
+    <div class="row" style="margin-top: 20px;">
 
-      <label class="col-md-12 col-form-label" style="margin-top: 20px;">Birth place</label>
+      <label class="col-sm-12 form-label" style="margin-top: 20px;">Date of death</label>
+
+      <div class="col-sm-9 d-inline-flex">
+
+        <label for="dateOfDeathDayOfMonth"
+               class="col-sm-1 form-label text-right"
+               style="margin-right: 20px;">Day</label>
+
+        <input id="dateOfDeathDayOfMonth" name="dateOfDeathDayOfMonth"
+               formControlName="dateOfDeathDayOfMonth"
+               type="number" min="0"
+               maxlength="2" size="2"
+               class="form-control col-sm-2" style="width: 10%"/>
+
+        <label for="dateOfDeathMonth"
+               class="col-sm-1 form-label text-right"
+               style="margin-left: 20px; margin-right: 20px;">Month</label>
+
+        <input id="dateOfDeathMonth" name="dateOfDeathMonth"
+               formControlName="dateOfDeathMonth"
+               type="number" min="0"
+               maxlength="2" size="2"
+               class="form-control col-sm-2" style="width: 10%"/>
+
+        <label for="dateOfDeathYear"
+               class="col-sm-1 form-label text-right"
+               style="margin-left: 20px; margin-right: 20px;">Year</label>
+
+        <input id="dateOfDeathYear" name="dateOfDeathYear"
+               formControlName="dateOfDeathYear"
+               type="number" min="0"
+               maxlength="4" size="4"
+               class="form-control col-sm-2" style="width: 10%"/>
+
+      </div>
+
+    </div>
+
+    <div class="row" style="margin-top: 20px;"> <!-- start of: birth place -->
+
+      <label class="col-sm-12 form-label" style="margin-top: 20px;">Birth place</label>
 
       <label for="birthPlaceName"
-             class="col-md-1 col-form-label text-right"
-             style="margin-right: 20px;">Name</label>
+             class="col-sm-1 form-label text-right"
+             style="margin-right: 20px; width: 5%; max-width: 5%">Name</label>
+
       <input id="birthPlaceName" name="birthPlaceName"
              formControlName="birthPlaceName"
              type="text"
-             class="form-control col-md-1"/>
+             maxlength="30" size="30"
+             class="form-control col-sm-4"
+             style="width: 40%;" />
 
-      <label for="birthPlaceAltitude"
-             class="col-md-1 col-form-label text-right"
-             style="margin-right: 20px;">Altitude</label>
-      <input id="birthPlaceAltitude" name="birthPlaceAltitude"
-             formControlName="birthPlaceAltitude"
-             type="text" class="form-control col-md-1"/>
+      <div class="col-sm-9 d-inline-flex input-group" style="margin-top: 10px; width: 90%;">
 
-      <label for="birthPlaceLatitude"
-             class="col-md-1 col-form-label text-right"
-             style="margin-right: 20px;">Latitude</label>
-      <input id="birthPlaceLatitude" name="birthPlaceLatitude"
-             formControlName="birthPlaceLatitude"
-             type="text" class="form-control col-md-1"/>
+        <label for="birthPlaceAltitude"
+                 class="col-sm-1 form-label text-right"
+                 style="margin-right: 20px; width: 5%; max-width: 5%">Altitude</label>
 
-      <label for="birthPlaceLongitude"
-             class="col-md-1 col-form-label text-right"
-             style="margin-right: 20px;">Longitude</label>
-      <input id="birthPlaceLongitude" name="birthPlaceLongitude"
-             formControlName="birthPlaceLongitude"
-             type="text" class="form-control col-md-1"/>
+        <input id="birthPlaceAltitude" name="birthPlaceAltitude"
+               formControlName="birthPlaceAltitude"
+               type="text"
+               maxlength="10" size="10"
+               class="form-control col-sm-2 me-3"
+               style="width: 10%; max-width: 10%;" />
 
-    </div>
+        <label for="birthPlaceLatitude"
+               class="col-sm-1 form-label text-right mx-3"
+               style="margin-right: 20px; width: 5%; max-width: 5%">Latitude</label>
 
-    <!-- death place -->
-    <div class="form-row" style="margin-top: 20px;">
+        <input id="birthPlaceLatitude" name="birthPlaceLatitude"
+               formControlName="birthPlaceLatitude"
+               type="text"
+               maxlength="10" size="10"
+               class="form-control col-sm-2 me-3"
+               style="padding-left: 10px; width: 10%; max-width: 10%;" />
 
-      <label class="col-md-12 col-form-label" style="margin-top: 20px;">Death place</label>
+        <label for="birthPlaceLongitude"
+               class="col-sm-1 form-label text-right mx-3"
+               style="margin-right: 20px; width: 5%; max-width: 5%">Longitude</label>
+
+        <input id="birthPlaceLongitude" name="birthPlaceLongitude"
+               formControlName="birthPlaceLongitude"
+               type="text"
+               maxlength="10" size="10"
+               class="form-control col-sm-2 me-3"
+               style="width: 10%; max-width: 10%;" />
+
+      </div>
+
+    </div> <!-- end of: birth place -->
+
+    <div class="row" style="margin-top: 20px;"> <!-- start of: death place -->
+
+      <label class="col-sm-12 form-label" style="margin-top: 20px;">Death place</label>
 
       <label for="deathPlaceName"
-             class="col-md-1 col-form-label text-right"
-             style="margin-right: 20px;">Name</label>
+             class="col-sm-1 form-label text-right"
+             style="margin-right: 20px; width: 5%; max-width: 5%">Name</label>
+
       <input id="deathPlaceName" name="deathPlaceName"
              formControlName="deathPlaceName"
-             type="text" class="form-control col-md-1"/>
+             type="text"
+             maxlength="30" size="30"
+             class="form-control col-sm-4"
+             style="width: 40%;" />
 
-      <label for="deathPlaceAltitude"
-             class="col-md-1 col-form-label text-right"
-             style="margin-right: 20px;">Altitude</label>
-      <input id="deathPlaceAltitude" name="deathPlaceAltitude"
-             formControlName="deathPlaceAltitude"
-             type="text" class="form-control col-md-1"/>
+      <div class="col-sm-9 d-inline-flex input-group" style="margin-top: 10px; width: 90%;">
 
-      <label for="deathPlaceLatitude"
-             class="col-md-1 col-form-label text-right"
-             style="margin-right: 20px;">Latitude</label>
-      <input id="deathPlaceLatitude" name="deathPlaceLatitude"
-             formControlName="deathPlaceLatitude"
-             type="text" class="form-control col-md-1"/>
+        <label for="deathPlaceAltitude"
+               class="col-sm-1 form-label text-right"
+               style="margin-right: 20px; width: 5%; max-width: 5%">Altitude</label>
 
-      <label for="deathPlaceLongitude"
-             class="col-md-1 col-form-label text-right"
-             style="margin-right: 20px;">Longitude</label>
-      <input id="deathPlaceLongitude" name="deathPlaceLongitude"
-             formControlName="deathPlaceLongitude"
-             type="text" class="form-control col-md-1"/>
+        <input id="deathPlaceAltitude" name="deathPlaceAltitude"
+               formControlName="deathPlaceAltitude"
+               type="text"
+               maxlength="10" size="10"
+               class="form-control col-sm-2 me-3"
+               style="width: 10%; max-width: 10%;" />
 
-    </div>
+        <label for="deathPlaceLatitude"
+               class="col-sm-1 form-label text-right mx-3"
+               style="margin-right: 20px;">Latitude</label>
+
+        <input id="deathPlaceLatitude" name="deathPlaceLatitude"
+               formControlName="deathPlaceLatitude"
+               type="text"
+               maxlength="10" size="10"
+               style="padding-left: 10px; width: 10%; max-width: 10%;" />
+
+        <label for="deathPlaceLongitude"
+               class="col-sm-1 form-label text-right mx-3"
+               style="margin-right: 20px; width: 5%; max-width: 5%">Longitude</label>
+
+        <input id="deathPlaceLongitude" name="deathPlaceLongitude"
+               formControlName="deathPlaceLongitude"
+               type="text"
+               maxlength="10" size="10"
+               class="form-control col-sm-2 me-3"
+               style="padding-left: 10px; width: 10%; max-width: 10%;" />
+
+      </div>
+
+    </div> <!-- end of: death place -->
 
     <div class="btn-toolbar" style="margin-top: 20px; margin-outside: 2px; ">
-      <button type="close" class="btn btn-danger" (click)="closeForm()">Close Form</button>
-      <button type="reset" class="btn btn-info">Clear Form</button>
-      <button type="button" class="btn btn-success" (click)="saveChanges()">Submit</button>
+      <button
+        id="closeFormButton"
+        type="close"
+        class="btn btn-danger"
+        (click)="closeForm()">Close Form</button>
+
+      <button
+        id="resetFormButton"
+        type="reset"
+        class="btn btn-info mx-3">Clear Form</button>
+
+      <button
+        id="saveFormButton"
+        type="button"
+        class="btn btn-success"
+        (click)="saveChanges()">Submit</button>
     </div>
 
   </form>

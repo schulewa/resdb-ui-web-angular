@@ -26,10 +26,12 @@ export class EditPersonComponent extends AbstractPersonComponent implements OnIn
     console.log('app-edit-person: start of ngOnInit - Person=' + this.person!.toString());
 
     // set values based on passed in Person
-    // console.log('app-edit-person: ngOnInit - Person.gender=' + this.person.gender.label);
-    console.log('app-edit-person: ngOnInit - Person.gender=' + this.person?.gender);
+    if (this.person) {
+      this.applyPerson(this.person);
+    }
+    // console.log('app-edit-person: ngOnInit - Person.gender=' + this.person?.gender);
     //
-    this.getPersonForm()!.controls['gender'].setValue(this.person?.gender, {onlySelf: true});
+    // this.getPersonForm()!.controls['gender'].setValue(this.person?.gender, {onlySelf: true});
 
     console.log('app-edit-person: end of ngOnInit');
   }
