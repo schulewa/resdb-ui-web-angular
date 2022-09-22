@@ -37,7 +37,7 @@ import { AddressTypeComponent } from './address-type/address-type.component';
 import { PlaceComponent } from './place/place.component';
 import { AddPersonComponent } from './add-person/add-person.component';
 import { EditPersonComponent } from './edit-person/edit-person.component';
-import { PersonComponent } from './person/person.component';
+import { PersonListComponent } from './person-list/person-list.component';
 import { TitlesComponent } from './titles/titles.component';
 import { PersonDetailComponent } from './person-detail/person-detail.component';
 import {MatExpansionModule} from "@angular/material/expansion";
@@ -76,7 +76,7 @@ import { UserGroupComponent } from './user-group/user-group.component';
     PlaceComponent,
     AddPersonComponent,
     EditPersonComponent,
-    PersonComponent,
+    PersonListComponent,
     TitlesComponent,
     PersonDetailComponent,
     UserComponent,

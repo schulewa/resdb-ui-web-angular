@@ -16,7 +16,7 @@ import {DataAction} from "../model/enums/data-action";
 import {hasFormFieldChanged} from "../utils/form-utils";
 
 @Component({
-  selector: 'app-person-details',
+  selector: 'app-person-detail',
   templateUrl: './person-detail.component.html',
   styleUrls: ['./person-detail.component.scss']
 })
@@ -83,6 +83,7 @@ export class PersonDetailComponent implements OnInit {
   }
 
   onGridReady(params: any) {
+    console.log('app-person-detail: onGridReady');
     this.titlesGridApi = params.api;
     this.datesGridApi = params.api; // TODO do we need separate api's ?
   }

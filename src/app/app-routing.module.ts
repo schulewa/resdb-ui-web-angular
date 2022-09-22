@@ -5,7 +5,7 @@ import {HomeComponent} from "./home/home.component";
 import {CountryComponent} from "./country/country.component";
 import {PlaceComponent} from "./place/place.component";
 import {SimpleRefdataComponent} from "./simple-refdata/simple-refdata.component";
-import {PersonComponent} from "./person/person.component";
+import {PersonListComponent} from "./person-list/person-list.component";
 import {PersonDetailComponent} from "./person-detail/person-detail.component";
 import {TitlesComponent} from "./titles/titles.component";
 import {UserComponent} from "./user/user.component";
@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'countries', component: CountryComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'persons', component: PersonComponent },
+  { path: 'persons', component: PersonListComponent },
   { path: 'addperson', component: PersonDetailComponent },
   { path: 'places', component: PlaceComponent },
   { path: 'simple-refdata', component: SimpleRefdataComponent },

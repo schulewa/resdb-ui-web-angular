@@ -37,7 +37,7 @@
     <div class="form-row" style="margin-top: 20px">
 
       <label class="col-md-1 col-form-label text-right">Gender</label>
-      <select id="gender" name="gender" formControlName="gender" (change)="onChangeGender()">
+      <select id="gender" name="gender" formControlName="gender" (change)="onChangeGender($event)">
         <option *ngFor="let gender of this.getGenders()" [value]="gender">{{gender.label}}</option>
       </select>
 

@@ -68,6 +68,11 @@ export class CoreOperationsMessages {
   public static get DELETE_MEASURE_TYPE(): string { return 'Attempting to mark measure type for deletion'; }
   public static get UPDATE_MEASURE_TYPE(): string { return 'Attempting to update measure type'; }
 
+  public static get FINDALL_PERSON(): string { return 'Attempting to final all live persons'; }
+  public static get ADD_PERSON(): string { return 'Attempting to add new person'; }
+  public static get DELETE_PERSON(): string { return 'Attempting to mark person for deletion'; }
+  public static get UPDATE_PERSON(): string { return 'Attempting to update person'; }
+
   public static get FINDALL_PERSON_TYPE(): string { return 'Attempting to final all live person types'; }
   public static get ADD_PERSON_TYPE(): string { return 'Attempting to add new person type'; }
   public static get DELETE_PERSON_TYPE(): string { return 'Attempting to mark person type for deletion'; }

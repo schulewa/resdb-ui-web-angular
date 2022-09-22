@@ -33,14 +33,16 @@ export abstract class AuditedEntityGridComponent<T extends IAuditedDataType> imp
   protected constructor() { }
 
   ngOnInit() {
+    console.log('app-audited-entity-grid: ngOnInit');
     this.initRowData();
     this.haveEmptyRow = false;
-    console.log('AuditedNamedEntityGridComponent: user language=' + navigator.language);
+    console.log('app-audited-entity-grid: user language=' + navigator.language);
     this.liveStatuses.push(DataStatus.New);
     this.liveStatuses.push(DataStatus.Amend);
   }
 
   onGridReady(params: { api: GridApi<any> | undefined; }) {
+    console.log('app-audited-entity-grid: onGridReady');
     this.gridApi = params.api;
   }
 
@@ -127,12 +129,12 @@ export abstract class AuditedEntityGridComponent<T extends IAuditedDataType> imp
   }
 
   protected  markRowForDeletion() {
-    console.log('AuditedNamedEntityGridComponent.markRowForDeletion');
+    console.log('app-audited-entity-grid.markRowForDeletion');
     let nameOfAction;
     this.rowData.filter(this.isSelected).forEach(function (value) {
       value.action = DataAction.Delete;
       nameOfAction = DataAction[value.action];
-      console.log('AuditedNamedEntityGridComponent.delete: mark for deletion - ' + value + '     name of action=' + nameOfAction);
+      console.log('app-audited-entity-grid.delete: mark for deletion - ' + value + '     name of action=' + nameOfAction);
     } );
     this.gridApi!.setRowData(this.rowData);
     this.gridApi!.refreshCells();
@@ -169,7 +171,7 @@ export abstract class AuditedEntityGridComponent<T extends IAuditedDataType> imp
   }
 
   protected actionSelected(popupMenuAction: any) {
-    console.log('AuditedEntityGridComponent.actionSelected: popupMenuAction=' + popupMenuAction);
+    console.log('app-audited-entity-grid.actionSelected: popupMenuAction=' + popupMenuAction);
     switch (popupMenuAction) {
       case DataPopupMenuAction.AddEmptyRow:
         this.addEmptyRow();
@@ -184,15 +186,15 @@ export abstract class AuditedEntityGridComponent<T extends IAuditedDataType> imp
         this.unmarkForDeletion();
         break;
       default:
-        console.error('AuditedEntityGridComponent.actionSelected: popup menu action not recognized');
+        console.error('app-audited-entity-grid.actionSelected: popup menu action not recognized');
     }
   }
 
   protected  unmarkForDeletion() {
-    console.log('TODO: AuditedEntityGridComponent. Unmarking row for deletion');
+    console.log('TODO: app-audited-entity-grid. Unmarking row for deletion');
   }
 
-  protected   updateGrid(saved: T) {
+  protected updateGrid(saved: T) {
     if (saved) {
       const newRowData: T[] = [];
       this.rowData.forEach( (entry) => {
@@ -203,15 +205,14 @@ export abstract class AuditedEntityGridComponent<T extends IAuditedDataType> imp
         }
       });
       this.gridApi!.setRowData(newRowData);
-      // this.gridApi!.refreshView();  // refreshView no longer exists
     }
 
-    console.log('AuditedEntityGridComponent.updateGrid: Data updated');
+    console.log('app-audited-entity-grid.updateGrid: Data updated');
   }
 
   protected onCellValueChanged(event: any) {
     // handle updated 'name' value
-    console.log('AuditedEntityGridComponent.onCellValueChanged - entry: event=' + event + ' haveEmptyRow=' + this.haveEmptyRow);
+    console.log('app-audited-entity-grid.onCellValueChanged - entry: event=' + event + ' haveEmptyRow=' + this.haveEmptyRow);
     if (event.data && event.data.id && event.data.id > 0) {
       event.data.action = DataAction.Update;
       this.gridApi!.refreshCells();
@@ -219,11 +220,11 @@ export abstract class AuditedEntityGridComponent<T extends IAuditedDataType> imp
 
     const nameColDef = this.gridApi!.getColumnDef('name');
     if (nameColDef === event.colDef) {
-      console.log('AuditedEntityGridComponent.onCellValueChanged: event.colDef == name column - set haveEmptyRow to false');
+      console.log('app-audited-entity-grid.onCellValueChanged: event.colDef == name column - set haveEmptyRow to false');
       this.haveEmptyRow = false;
     }
 
-    console.log('AuditedEntityGridComponent.onCellValueChanged - exit: haveEmptyRow=' + this.haveEmptyRow);
+    console.log('app-audited-entity-grid.onCellValueChanged - exit: haveEmptyRow=' + this.haveEmptyRow);
   }
 
   protected onRowSelected(event: any) {

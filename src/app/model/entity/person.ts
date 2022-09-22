@@ -6,6 +6,8 @@ import {IAuditedDataType} from "../interfaces/audited-data-type";
 import {DataStatus} from "../enums/data-status";
 import {DataAction} from "../enums/data-action";
 import {Constants} from "../constants";
+import {PersonAttribute} from "./person-attribute";
+import {PersonRole} from "./person-role";
 
 export class Person implements IAuditedDataType {
 
@@ -17,8 +19,6 @@ export class Person implements IAuditedDataType {
   gender: string;
   dateOfBirth: HistoricalDate;
   dateOfDeath: HistoricalDate;
-  prefixTitle: Title | undefined;
-  suffixTitle: Title | undefined;
   birthPlace: Place | undefined;
   deathPlace: Place | undefined;
 
@@ -30,6 +30,8 @@ export class Person implements IAuditedDataType {
   action: DataAction;
   isDataChanged: boolean;
 
+  attributes: PersonAttribute[];
+  roles: PersonRole[];
   titles: PersonTitle[];
 
   constructor() {
@@ -47,6 +49,8 @@ export class Person implements IAuditedDataType {
     this.selected = false;
     this.action = DataAction.Add;
     this.isDataChanged = false;
+    this.attributes = [];
+    this.roles = [];
     this.titles = [];
   }
 
@@ -63,8 +67,6 @@ export class Person implements IAuditedDataType {
 
     str = ' ' + this.appendVaue(str, person, 'dateOfBirth');
     str = ' ' + this.appendVaue(str, person, 'dateOfDeath');
-    str = ' ' + this.appendVaue(str, person, 'prefixTitle');
-    str = ' ' + this.appendVaue(str, person, 'suffixTitle');
     str = ' ' + this.appendVaue(str, person, 'birthPlace');
     str = ' ' + this.appendVaue(str, person, 'deathPlace');
 
@@ -94,8 +96,6 @@ export class Person implements IAuditedDataType {
       ' gender=' + this.gender +
       ' dateOfBirth=' + this.dateOfBirth +
       ' dateOfDeath=' + this.dateOfDeath +
-      ' prefixTitle=' + this.prefixTitle +
-      ' suffixTitle=' + this.suffixTitle +
       ' birthPlace=' + this.birthPlace +
       ' deathPlace=' + this.deathPlace;
   }
