@@ -1,13 +1,11 @@
 # resdb
 Research Database for my historian wife for research into pre-Columbian textfiles from Central and South America.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.4.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.0.
 
 ### Prerequisites
 Install the following software dependencies:
 
-- MySQL database server, 5.6+
-- Java 17+
 - Node 16.16+
 - Typescript 4.7+
 

@@ -6,8 +6,11 @@ import {DataAction} from "../enums/data-action";
 
 export class PersonTitle {
 
+  id: number | undefined;
+
   person: Person | undefined;
   title: Title | undefined;
+  position: number | undefined;
 
   status: DataStatus;
   createdBy: string;

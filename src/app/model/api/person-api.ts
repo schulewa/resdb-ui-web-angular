@@ -4,6 +4,8 @@ import {Place} from "../entity/place";
 import {DataStatus} from "../enums/data-status";
 import {DataAction} from "../enums/data-action";
 import {PersonTitle} from "../entity/person-title";
+import {PersonRole} from "../entity/person-role";
+import {PersonAttribute} from "../entity/person-attribute";
 
 export interface PersonApi {
     id: number;
@@ -13,8 +15,6 @@ export interface PersonApi {
     gender: string;
     dateOfBirth: HistoricalDate;
     dateOfDeath: HistoricalDate;
-    prefixTitle: Title;
-    suffixTitle: Title;
     birthPlace: Place;
     deathPlace: Place;
 
@@ -26,5 +26,7 @@ export interface PersonApi {
     action: DataAction;
     isDataChanged: boolean;
 
+    attributes: PersonAttribute[];
+    roles: PersonRole[];
     titles: PersonTitle[];
 }

@@ -110,6 +110,66 @@
 
     </div>
 
+    <div id="roles-grid-panel" class="row" style="margin-top: 20px;">
+
+      <div style="margin-left: -10px;">
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Roles</mat-panel-title>
+            <mat-panel-description>
+              Maintain the list of selected roles for this person. Use checkbox to set roles for person.
+              These will be committed when details are saved.
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <!-- display checkbox per role-->
+          <ag-grid-angular style="width: 100%; height: 250px;"
+                           class="ag-theme-balham"
+                           [rowData]="this.selectedRoles"
+                           (rowSelected)="onRowSelectedRole($event)"
+                           (selectionChanged)="onRowSelectedRoleChanged($event)"
+                           (cellValueChanged)="onRolesCellValueChanged($event)"
+                           [columnDefs]="createRolesColumnDefs()"
+                           (gridReady)="onRolesGridReady($event)">
+          </ag-grid-angular>
+
+        </mat-expansion-panel>
+
+      </div>
+
+    </div>
+
+    <div id="attributes-grid-panel" class="row" style="margin-top: 20px;">
+
+      <div style="margin-left: -10px;">
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Attributes</mat-panel-title>
+            <mat-panel-description>
+              Maintain the list of selected attributes for this person. Use checkbox to set attributes for person.
+              These will be committed when details are saved.
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <!-- display checkbox per role-->
+          <ag-grid-angular style="width: 100%; height: 250px;"
+                           class="ag-theme-balham"
+                           [rowData]="this.selectedAttributes"
+                           (rowSelected)="onRowSelectedAttributeType($event)"
+                           (selectionChanged)="onRowSelectedAttributeTypeChanged($event)"
+                           (cellValueChanged)="onAttributeTypesCellValueChanged($event)"
+                           [columnDefs]="createPersonAttributesColumnDefs()"
+                           (gridReady)="onRolesGridReady($event)">
+          </ag-grid-angular>
+
+        </mat-expansion-panel>
+
+      </div>
+
+    </div>
+
     <!--        <div class="row" style="margin-top: 20px;">-->
 
     <!--            <mat-expansion-panel>-->

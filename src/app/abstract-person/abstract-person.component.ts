@@ -14,6 +14,11 @@ import {TitleType} from "../model/enums/title-type";
 import {Constants} from "../model/constants";
 import {hasFormFieldChanged} from "../utils/form-utils";
 import {DataAction} from "../model/enums/data-action";
+import {Role} from "../model/entity/role";
+import {AttributeType} from "../model/entity/attribute-type";
+import {PersonRole} from "../model/entity/person-role";
+import {PersonAttribute} from "../model/entity/person-attribute";
+import {historicalDateFormatterYYYYMMDD} from "../formatters/date-formatters";
 
 @Component({
   selector: 'app-abstract-person',
@@ -28,9 +33,17 @@ export abstract class AbstractPersonComponent implements OnInit {
   protected person: Person | undefined
   protected personForm: FormGroup | undefined;
 
-  protected filteredTitles: Title[] = [];
-  protected selectedTitle: Title | undefined;
-  protected selectedTitles: Title[] = [];
+  protected filteredTitles: PersonTitle[] = [];
+  protected selectedTitle: PersonTitle | undefined;
+  protected selectedTitles: PersonTitle[] = [];
+
+  protected filteredRoles: PersonRole[] = [];
+  protected selectedRole: PersonRole | undefined;
+  protected selectedRoles: PersonRole[] = [];
+
+  protected filteredAttributes: PersonAttribute[] = [];
+  protected selectedAttribute: PersonAttribute | undefined;
+  protected selectedAttributes: PersonAttribute[] = [];
 
   protected allGenders: CodeLabel[] = [];
   protected filteredGenders: CodeLabel[] = [];
@@ -44,6 +57,14 @@ export abstract class AbstractPersonComponent implements OnInit {
 
   public rowSelectionMode = 'single';
 
+  protected attributeTypesGridApi: GridApi | undefined;
+  protected attributeTypesColumnDefs: ColDef[] = [];
+  protected attributeTypesGridOptions: GridOptions | undefined;
+
+  protected rolesGridApi: GridApi | undefined;
+  protected rolesColumnDefs: ColDef[] = [];
+  protected rolesGridOptions: GridOptions | undefined;
+
   protected titlesGridApi: GridApi | undefined;
   protected titlesColumnDefs: ColDef[] = [];
   protected titlesGridOptions: GridOptions | undefined;
@@ -54,6 +75,9 @@ export abstract class AbstractPersonComponent implements OnInit {
 
   constructor(protected router: Router, protected fb: FormBuilder, protected titlesService: TitlesService) {
     this.titlesColumnDefs = this.createTitlesColumnDefs();
+    this.titlesGridOptions = this.createTitlesGridOptions();
+    //
+    this.rolesColumnDefs = this.createTitlesColumnDefs();
     this.titlesGridOptions = this.createTitlesGridOptions();
     //
     this.datesColumnDefs = this.createDatesColumnDefs();
@@ -74,13 +98,13 @@ export abstract class AbstractPersonComponent implements OnInit {
   // apply all values from Person that dod not rely on GridApi such as titlesGridApi
   // as onGridReady is called after ngOnInit
   protected applyPerson(existingPerson: Person) {
-    console.log('app-abstract-person.applyPerson: existingPerson.titles length=' + existingPerson.titles.length);
+    // console.log('app-abstract-person.applyPerson: existingPerson.titles length=' + existingPerson.titles.length);
       this.getPersonForm().controls['firstName'].patchValue(existingPerson.firstName, { emitEvent: false });
       this.getPersonForm().controls['middleName'].patchValue(existingPerson.middleName, { emitEvent: false });
       this.getPersonForm().controls['familyName'].patchValue(existingPerson.familyName, { emitEvent: false });
       this.getPersonForm().controls['gender'].patchValue(existingPerson.gender, { emitEvent: false });
       //
-      existingPerson.titles.forEach((personTitle) => this.logPersonTitle(personTitle));
+      // existingPerson.titles.forEach((personTitle) => this.logPersonTitle(personTitle));
       this.getPersonForm().controls['titles'].patchValue(existingPerson.titles, {emitEvent: false});
 
       this.getPersonForm().controls['dateOfBirthDayOfMonth'].patchValue(existingPerson.dateOfBirth?.day)
@@ -90,16 +114,6 @@ export abstract class AbstractPersonComponent implements OnInit {
     this.getPersonForm().controls['dateOfDeathDayOfMonth'].patchValue(existingPerson.dateOfDeath?.day)
     this.getPersonForm().controls['dateOfDeathMonth'].patchValue(existingPerson.dateOfDeath?.month)
     this.getPersonForm().controls['dateOfDeathYear'].patchValue(existingPerson.dateOfDeath?.year)
-
-    if (existingPerson.titles?.length > 0) {
-      this.selectedTitles = [];
-      for (const personTitle of existingPerson.titles) {
-        if (personTitle != null && personTitle.title != null) {
-          this.selectedTitles.push(personTitle.title!);
-        }
-      }
-      this.selectedTitles.forEach((title) => this.logTitle(title));
-    }
 
     if (existingPerson.birthPlace) {
       this.getPersonForm().controls['birthPlaceName'].patchValue(existingPerson.birthPlace.name)
@@ -114,6 +128,46 @@ export abstract class AbstractPersonComponent implements OnInit {
       this.getPersonForm().controls['deathPlaceLatitude'].patchValue(existingPerson.deathPlace.latitude)
       this.getPersonForm().controls['deathPlaceLongitude'].patchValue(existingPerson.deathPlace.longitude)
     }
+
+    if (existingPerson.titles?.length > 0) {
+      this.selectedTitles = [];
+      for (const personTitle of existingPerson.titles) {
+        if (personTitle != null) {
+          this.selectedTitles.push(personTitle);
+        }
+      }
+      this.selectedTitles.forEach((personTitle) => this.logPersonTitle(personTitle));
+    }
+
+    if (existingPerson.roles?.length > 0) {
+      this.selectedRoles = [];
+      for (const personRole of existingPerson.roles) {
+        if (personRole != null) {
+          this.selectedRoles.push(personRole);
+        }
+      }
+      this.selectedRoles.forEach((role) => this.logPersonRole(role));
+    }
+
+    if (existingPerson.attributes?.length > 0) {
+      this.selectedAttributes = [];
+      for (const personAttribute of existingPerson.attributes) {
+        if (personAttribute != null) {
+          this.selectedAttributes.push(personAttribute);
+        }
+      }
+      this.selectedAttributes.forEach((attribute) => this.logPersonAttribute(attribute));
+    }
+  }
+
+  protected logPersonAttribute(personAttribute: PersonAttribute) {
+    console.log('app-abstract-person.logPersonAttribute: personAttribute ' +
+      ' attribute=' + personAttribute.attributeType?.name + ' dataType=' + personAttribute.attributeType?.dataType);
+  }
+
+  protected logPersonRole(personRole: PersonRole) {
+    console.log('app-abstract-person.logPersonRole: personRole ' +
+      ' role=' + personRole.role + ' roleStarted=' + personRole.roleStarted + ' roleEnded=' + personRole.roleEnded);
   }
 
   protected logPersonTitle(personTitle: PersonTitle) {
@@ -178,14 +232,70 @@ export abstract class AbstractPersonComponent implements OnInit {
     };
   }
 
+  protected createPersonAttributesColumnDefs(): any[] {
+    return [
+      {headerName: 'Selected', field: 'selected', width: 100, checkboxSelection: true, editable: true},
+      {headerName: 'ID', field: 'id', width: 60, editable: false, filter: true},
+      {headerName: 'Name', field: 'attributeType.name', width: 100, editable: false, filter: true},
+      {headerName: 'Position', field: 'position', width: 100, editable: false, filter: true},
+      {headerName: 'Type', field: 'attributeType.dataType', width: 75, editable: false, filter: false},
+      {headerName: 'Decimal Value', field: 'decimalValue', width: 100, editable: false, filter: false},
+      {headerName: 'Integer Value', field: 'integerValue', width: 100, editable: false, filter: false},
+      {headerName: 'String Value', field: 'stringValue', width: 100, editable: false, filter: false},
+    ];
+  }
+
+  onAttributeTypesGridReady(params: any) {
+    console.log('app-abstract-person: onAttributeTypesGridReady');
+    this.reloadRoles();
+    if (this.attributeTypesGridApi) {
+      var params: any = {
+        force: false,
+        suppressFlash: true,
+      };
+      this.attributeTypesGridApi!.refreshCells(params);
+    }
+  }
+
+  protected createRolesColumnDefs(): any[] {
+    return [
+      {headerName: 'Selected', field: 'selected', width: 100, checkboxSelection: true, editable: true},
+      {headerName: 'ID', field: 'id', width: 60, editable: false, filter: true},
+      {headerName: 'Name', field: 'role.name', width: 200, editable: false, filter: true},
+      {headerName: 'Started', field: 'roleStarted', valueFormatter: historicalDateFormatterYYYYMMDD, width: 100, editable: false, filter: true},
+      {headerName: 'Ended', field: 'roleEnded', valueFormatter: historicalDateFormatterYYYYMMDD, width: 100, editable: false, filter: true},
+    ];
+  }
+
+  protected createRolesGridOptions(): GridOptions {
+    return <GridOptions>{
+      animateRows: true,
+      enableCellChangeFlash: true,
+      enableColResize: true,
+      enableFilter: true,
+      enableSorting: true,
+      onCellValueChanged: this.onChangeRole,
+      rowDeselection: false,
+      rowSelection: 'multiple',
+      statusBar: {
+        statusPanels: [
+          {statusPanel: 'agTotalRowCountComponent', align: 'left'},
+          {statusPanel: 'agSelectedRowCountComponent'}
+        ]
+      },
+      unSortIcon: true
+    };
+  }
+
   protected createTitlesColumnDefs(): any[] {
     return [
       {headerName: 'Selected', field: 'selected', width: 100, checkboxSelection: true, editable: true},
       {headerName: 'ID', field: 'id', width: 60, editable: false, filter: true},
-      {headerName: 'Title', field: 'title', width: 100, editable: false, filter: true},
-      {headerName: 'Description', field: 'description', width: 200, editable: false, filter: true},
-      {headerName: 'Type', field: 'titleType', width: 200, editable: false, filter: true},
-      {headerName: 'M/F', field: 'appliesTo', width: 80, editable: false, filter: true}
+      {headerName: 'Title', field: 'title.title', width: 100, editable: false, filter: true},
+      {headerName: 'Description', field: 'title.description', width: 200, editable: false, filter: true},
+      {headerName: 'Position', field: 'position', width: 75, editable: false, filter: true},
+      {headerName: 'Type', field: 'title.titleType', width: 200, editable: false, filter: true},
+      {headerName: 'M/F', field: 'title.appliesTo', width: 80, editable: false, filter: true}
     ];
   }
 
@@ -209,12 +319,12 @@ export abstract class AbstractPersonComponent implements OnInit {
     };
   }
 
-  protected filterTitles(): Title[] {
-    return this.allTitles.filter(title =>
-      // this.gender.current !== this.gender.UNKNOWN && title.appliesTo === this.gender
-      this.gender !== undefined && title.appliesTo === this.gender &&
-      this.selectedTitleTypeLabel !== undefined && title.titleType === this.selectedTitleTypeLabel.getLabel()
-    );
+  protected filterTitles(): PersonTitle[] {
+    return [];
+    // return this.allTitles.filter(title =>
+    //   this.gender !== undefined && title.appliesTo === this.gender &&
+    //   this.selectedTitleTypeLabel !== undefined && personTitle.title.titleType === this.selectedTitleTypeLabel.getLabel()
+    // );
   }
 
   protected getDateOfBirthDay(): number {
@@ -250,7 +360,7 @@ export abstract class AbstractPersonComponent implements OnInit {
     return this.personForm!;
   }
 
-  protected getTitles(): Title[] {
+  protected getTitles(): PersonTitle[] {
     console.log('app-abstract-person.getTitles: start');
 
     this.selectedTitles = [];
@@ -265,23 +375,23 @@ export abstract class AbstractPersonComponent implements OnInit {
         console.log('app-abstract-person.getTitles: map PersonTitle to Title');
         const personTitle: PersonTitle = this.person.titles[datum];
 
-        if (personTitle != null && personTitle.title != null) {
-          const title: Title = new Title();
-          title.id = personTitle.title?.id;
-          title.title = personTitle.title.title;
-          title.description = personTitle.title.description;
-          title.titleType = personTitle.title.titleType;
-          title.appliesTo = personTitle.title.appliesTo;
-          title.status = personTitle.title.status;
-          title.createdBy = personTitle.title.createdBy;
-          title.updatedBy = personTitle.title.updatedBy;
-          title.lastUpdated = personTitle.title.lastUpdated;
-          title.selected = personTitle.title.selected;
-          title.action = personTitle.title.action;
-          title.isDataChanged = personTitle.title.isDataChanged;
-          console.log('app-abstract-person.getTitles: constructed Title = ' + title.title);
-          this.selectedTitles.push(title);
-        }
+        // if (personTitle != null) {
+        //   const title: PersonTitle = new PersonTitle();
+        //   title.id = personTitle.title?.id;
+        //   title.title.title = personTitle.title.title;
+        //   title.description = personTitle.title.description;
+        //   title.titleType = personTitle.title.titleType;
+        //   title.appliesTo = personTitle.title.appliesTo;
+        //   title.status = personTitle.title.status;
+        //   title.createdBy = personTitle.title.createdBy;
+        //   title.updatedBy = personTitle.title.updatedBy;
+        //   title.lastUpdated = personTitle.title.lastUpdated;
+        //   title.selected = personTitle.title.selected;
+        //   title.action = personTitle.title.action;
+        //   title.isDataChanged = personTitle.title.isDataChanged;
+        //   console.log('app-abstract-person.getTitles: constructed Title = ' + title.title);
+        //   this.selectedTitles.push(title);
+        // }
       }
     }
 
@@ -435,7 +545,7 @@ export abstract class AbstractPersonComponent implements OnInit {
   }
 
   protected onChangeTitle() {
-    const selected: Title = this.getPersonForm()!.controls['title'].value;
+    const selected: PersonTitle = this.getPersonForm()!.controls['title'].value;
     console.log('app-abstract-person.onChangeTitle: new title=' + selected);
     this.selectedTitle = selected;
   }
@@ -456,6 +566,52 @@ export abstract class AbstractPersonComponent implements OnInit {
     }
   }
 
+  protected onRowSelectedAttributeType(event: any) {
+    const attributeType: AttributeType = event.node.selected;
+    event.data.selected = event.node.selected;
+    console.log('app-abstract-person.onRowSelectedAttributeType: attributeType=' + attributeType);
+  }
+
+  protected onRowSelectedAttributeTypeChanged(event: any) {
+    const attributeType: AttributeType = event.node.selected;
+    console.log('app-abstract-person.onRowSelectedAttributeTypeChanged: role=' + attributeType);
+  }
+
+  onAttributeTypesCellValueChanged(event: any) {
+    // handle updated 'name' value
+    console.log('onAttributeTypesCellValueChanged - entry: event=' + event);
+    if (event.data && event.data.id && event.data.id > 0) {
+      event.data.action = DataAction.Update;
+      this.rolesGridApi!.refreshCells();
+    }
+  }
+
+  protected onRowSelectedRole(event: any) {
+    const role: Role = event.node.selected;
+    event.data.selected = event.node.selected;
+    console.log('app-abstract-person.onRowSelectedRole: role=' + role);
+  }
+
+  protected onRowSelectedRoleChanged(event: any) {
+    const role: Role = event.node.selected;
+    console.log('app-abstract-person.onRowSelectedRoleChanged: role=' + role);
+  }
+
+  onRolesCellValueChanged(event: any) {
+    // handle updated 'name' value
+    console.log('onRolesCellValueChanged - entry: event=' + event);
+    if (event.data && event.data.id && event.data.id > 0) {
+      event.data.action = DataAction.Update;
+      this.rolesGridApi!.refreshCells();
+    }
+  }
+
+  protected onChangeRole() {
+    const selected: Role = this.getPersonForm()!.controls['role'].value; // what should this be ?
+    console.log('app-abstract-person.onChangeRole: new role=' + selected);
+    // this.selectedRole = selected; // TODO change selectedRole to new selection
+  }
+
   protected onRowSelectedTitle(event: any) {
     const title: Title = event.node.selected;
     event.data.selected = event.node.selected;
@@ -467,6 +623,39 @@ export abstract class AbstractPersonComponent implements OnInit {
     const title: Title = event.node.selected;
     console.log('app-abstract-person.onRowSelectedTitleChanged: title=' + title);
     // this.selectedTitles = this.titlesGridApi.getSelectedRows();
+  }
+
+  onRolesGridReady(params: any) {
+    console.log('app-abstract-person: onRolesGridReady');
+    this.reloadRoles();
+    if (this.rolesGridApi) {
+      var params: any = {
+        force: false,
+        suppressFlash: true,
+      };
+      this.rolesGridApi!.refreshCells(params);
+    }
+  }
+
+  protected reloadRoles() {
+    // console.log('app-abstract-person: reloadRoles - person roles length = ' + this.person?.roles?.length);
+    // if (this.person?.roles && this.person?.roles?.length > 0) {
+
+      // this.selectedTitles = []
+      // for (let i=0; i < this.person.titles.length; i++) {
+      //   const personTitle = this.person.titles[i] as PersonTitle;
+      //   if (personTitle != null && personTitle.title != null) {
+      //     console.log('app-abstract-person: reloadTitles - title=' + personTitle.title.title + ' titleType=' + personTitle.title.titleType + ' appliesTo=' + personTitle.title.appliesTo);
+      //     const currentTitle = personTitle.title as Title;
+      //     // const currentTitleType = personTitle.title.titleType as TitleType;
+      //     console.log('app-abstract-person: reloadTitles - currentTitle title=' + currentTitle.title + ' titleType=' + currentTitle.titleType?.toString());
+      //     this.selectedTitles.push(personTitle.title);
+      //   }
+      // }
+      // this.selectedTitles = this.person?.titles?.map((title) => title?.title);
+      console.log('applyPerson: selectedRoles=' + this.selectedRoles);
+      this.getPersonForm().controls['roles'].patchValue(this.selectedRoles, {emitEvent: false});
+    // }
   }
 
   protected reloadTitles() {
