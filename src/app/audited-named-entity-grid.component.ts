@@ -35,13 +35,11 @@ export abstract class AuditedNamedEntityGridComponent<T extends IAuditedNameData
   ngOnInit() {
     this.initRowData();
     this.haveEmptyRow = false;
-    console.log('app-audited-named-entity-grid: user language=' + navigator.language);
     this.liveStatuses.push(DataStatus.New);
     this.liveStatuses.push(DataStatus.Amend);
   }
 
   onGridReady(params: { api: GridApi<any> | undefined; }) {
-    console.log('app-audited-named-entity-grid: onGridReady');
     this.gridApi = params.api;
   }
 

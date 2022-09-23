@@ -44,6 +44,9 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import { UserComponent } from './user/user.component';
 import { AbstractPersonComponent } from './abstract-person/abstract-person.component';
 import { UserGroupComponent } from './user-group/user-group.component';
+import { LanguageComponent } from './language/language.component';
+import { YesNoCellRendererComponent } from './cell-renderers/yes-no-cell-renderer/yes-no-cell-renderer.component';
+import { ThumbnailCellRendererComponent } from './cell-renderers/thumbnail-cell-renderer/thumbnail-cell-renderer.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +84,9 @@ import { UserGroupComponent } from './user-group/user-group.component';
     PersonDetailComponent,
     UserComponent,
     UserGroupComponent,
+    LanguageComponent,
+    YesNoCellRendererComponent,
+    ThumbnailCellRendererComponent,
   ],
   imports: [
     BrowserModule,
