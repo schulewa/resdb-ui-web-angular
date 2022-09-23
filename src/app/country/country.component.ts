@@ -7,13 +7,18 @@ import {IAuditedNameDataType} from "../model/interfaces/audited-name-data-type";
 import {DataAction} from "../model/enums/data-action";
 import {DataStatus} from "../model/enums/data-status";
 import {DateFormatters} from "../formatters/date-formatters";
+import {AuditedEntityGridComponent} from "../audited-entity-grid.component";
+import {
+  ThumbnailCellRendererComponent
+} from "../cell-renderers/thumbnail-cell-renderer/thumbnail-cell-renderer.component";
 
 @Component({
   selector: 'app-country',
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.scss']
 })
-export class CountryComponent extends AuditedNamedEntityGridComponent<Country> implements OnInit {
+// export class CountryComponent extends AuditedNamedEntityGridComponent<Country> implements OnInit {
+export class CountryComponent extends AuditedEntityGridComponent<Country> implements OnInit {
 
   constructor(private countryService: CountryService) {
     super();
@@ -33,7 +38,7 @@ export class CountryComponent extends AuditedNamedEntityGridComponent<Country> i
       { headerName: 'Name', field: 'name', width: 200, editable: true, filter: true },
       { headerName: 'State Name', field: 'stateName', width: 300, editable: true, filter: true },
       { headerName: 'Sovereignty', field: 'sovereignty', width: 300, editable: true, filter: true },
-      { headerName: 'Flag Image', field: 'flagImage', width: 200, editable: true, filter: true },
+      { headerName: 'Flag Image', field: 'flagImage', width: 200, editable: true, filter: false, cellRenderer: ThumbnailCellRendererComponent},
       { headerName: 'Status', field: 'status', width: 100, editable: false, filter: true },
       { headerName: 'Created by', field: 'createdBy', width: 110, editable: false, filter: true },
       { headerName: 'Last updated by', field: 'updatedBy', width: 150, editable: false, filter: true },
@@ -49,6 +54,7 @@ export class CountryComponent extends AuditedNamedEntityGridComponent<Country> i
     ];
   }
 
+  // @ts-ignore
   initRowData() {
     this.rowData = [];
     //
@@ -129,5 +135,8 @@ export class CountryComponent extends AuditedNamedEntityGridComponent<Country> i
 
   }
 
+}
 
+function countryFlagCellRenderer(params: any) {
+  console.log("countryFlagCellRenderer: params=" + params);
 }

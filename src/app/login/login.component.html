@@ -1,4 +1,4 @@
-<div class="page-header">
+<div class="page-header" style="margin-top: 20px">
   <h1>User Authentication</h1>
 </div>
 
@@ -11,10 +11,10 @@
 
 <div class="row">
 
-  <div class="col-md-3">
+  <div class="col-md-4">
   </div>
 
-  <div class="col-md-6" style="background-color: #eee;">
+  <div class="col-md-4" style="background-color: #eee;">
 
     <h3>Enter your credentials</h3>
 
@@ -23,7 +23,7 @@
       <div class="form-row">
 
         <label class="col-md-3 col-form-label">User name</label>
-        <input class="form-control col-md-3" id="userName" name="userName" formControlName="userName" type="text"/>
+        <input class="form-control col-md-3" id="userName" name="userName" formControlName="userName" type="text" />
 
         <div *ngIf="loginForm.get('userName')?.invalid && (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched)" class="alert alert-danger">
           User name must be provided
@@ -36,14 +36,14 @@
         <label for="userPassword" class="col-md-3 col-form-label">Password</label>
         <input class="form-control col-md-3" id="userPassword" name="userPassword" formControlName="userPassword" type="password">
 
-        <div *ngIf="loginForm.get('userName')?.invalid && (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched)">
+        <div *ngIf="loginForm.get('userName')?.invalid && (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched)" class="alert alert-danger">
           Password must be provided
         </div>
 
       </div>
 
       <div class="btn-toolbar" style="margin-top: 20px; margin-outside: 2px; ">
-        <button type="reset" class="btn btn-info">Clear Form</button>
+        <button type="reset" class="btn btn-info" style="margin-right: 10px;">Clear Form</button>
         <button type="submit" class="btn btn-success">Submit</button>
       </div>
 
@@ -61,7 +61,7 @@
 
   </div>
 
-  <div class="col-md-3">
+  <div class="col-md-4">
   </div>
 
 </div>

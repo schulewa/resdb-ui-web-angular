@@ -10,11 +10,13 @@ import {PersonDetailComponent} from "./person-detail/person-detail.component";
 import {TitlesComponent} from "./titles/titles.component";
 import {UserComponent} from "./user/user.component";
 import {UserGroupComponent} from "./user-group/user-group.component";
+import {LanguageComponent} from "./language/language.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'countries', component: CountryComponent },
+  { path: 'languages',component: LanguageComponent },
   { path: 'login', component: LoginComponent },
   { path: 'persons', component: PersonListComponent },
   { path: 'addperson', component: PersonDetailComponent },
