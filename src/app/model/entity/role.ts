@@ -1,25 +1,26 @@
-import {IDataChanged} from "../interfaces/data-changed";
 import {DataStatus} from "../enums/data-status";
+import {IAuditedNameDataType} from "../interfaces/audited-name-data-type";
+import {DataAction} from "../enums/data-action";
 
-export class Role implements IDataChanged {
-  id: number;
+export class Role implements IAuditedNameDataType {
+  id?: number;
   name: string;
-  status: DataStatus | undefined;
-  createdBy: string | undefined;
-  updatedBy: string | undefined;
-  lastUpdated: Date | undefined;
-  selected: boolean = false;
+  status: DataStatus;
+  createdBy: string;
+  updatedBy?: string;
+  lastUpdated?: Date;
+  selected: boolean;
+  action: DataAction;
 
   isDataChanged: boolean;
 
   constructor() {
-    this.id = 0;
     this.name = '';
+    this.status = DataStatus.New;
+    this.createdBy = '';
+    this.selected = false;
+    this.action = DataAction.Add;
     this.isDataChanged = false;
-  }
-
-  isSaveButtonEnabled(): boolean {
-    return this.isDataChanged;
   }
 
 }

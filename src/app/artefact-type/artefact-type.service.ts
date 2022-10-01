@@ -27,7 +27,7 @@ export class ArtefactTypeService {
   }
 
   delete(artefactType: ArtefactType): Observable<ArtefactType> {
-    const url = ArtefactTypeService.constructUrlWithId(ResdbUrlEndpoints.ARTEFACT_TYPE_URL, artefactType.id);
+    const url = ArtefactTypeService.constructUrlWithId(ResdbUrlEndpoints.ARTEFACT_TYPE_URL, artefactType.id!);
     console.log('URL for marking artefact type for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

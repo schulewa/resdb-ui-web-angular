@@ -27,7 +27,7 @@ export class HierarchyTypeService {
   }
 
   delete(entityType: HierarchyType): Observable<HierarchyType> {
-    const url = HierarchyTypeService.constructUrlWithId(ResdbUrlEndpoints.HIERARCHY_TYPE_URL, entityType.id);
+    const url = HierarchyTypeService.constructUrlWithId(ResdbUrlEndpoints.HIERARCHY_TYPE_URL, entityType.id!);
     console.log('URL for marking hierarchy type group for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

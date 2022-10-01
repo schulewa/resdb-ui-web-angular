@@ -27,7 +27,7 @@ export class RaceTypeService {
   }
 
   delete(raceType: RaceType): Observable<RaceType> {
-    const url = RaceTypeService.constructUrlWithId(ResdbUrlEndpoints.RACE_TYPE_URL, raceType.id);
+    const url = RaceTypeService.constructUrlWithId(ResdbUrlEndpoints.RACE_TYPE_URL, raceType.id!);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'

@@ -93,6 +93,11 @@ export class CoreOperationsMessages {
   public static get DELETE_RACE_TYPE(): string { return 'Attempting to mark race type for deletion'; }
   public static get UPDATE_RACE_TYPE(): string { return 'Attempting to update race type'; }
 
+  public static get FINDALL_ROLE(): string { return 'Attempting to final all live roles'; }
+  public static get ADD_ROLE(): string { return 'Attempting to add new role'; }
+  public static get DELETE_ROLE(): string { return 'Attempting to mark role for deletion'; }
+  public static get UPDATE_ROLE(): string { return 'Attempting to update role'; }
+
   public static get FINDALL_TALE_TYPE(): string { return 'Attempting to final all live tale types'; }
   public static get ADD_TALE_TYPE(): string { return 'Attempting to add new tale type'; }
   public static get DELETE_TALE_TYPE(): string { return 'Attempting to mark tale type for deletion'; }

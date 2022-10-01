@@ -27,7 +27,7 @@ export class LanguageGroupService {
   }
 
   delete(entityType: LanguageGroup): Observable<LanguageGroup> {
-    const url = LanguageGroupService.constructUrlWithId(ResdbUrlEndpoints.LANGUAGE_GROUP_URL, entityType.id);
+    const url = LanguageGroupService.constructUrlWithId(ResdbUrlEndpoints.LANGUAGE_GROUP_URL, entityType.id!);
     console.log('URL for marking language group for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

@@ -1,3 +1,3 @@
 export interface IPrimaryKey {
-  id: number;
+  id?: number;
 }

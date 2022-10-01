@@ -27,7 +27,7 @@ export class PlaceService {
   }
 
   delete(place: Place): Observable<Place> {
-    const url = PlaceService.constructUrlWithId(ResdbUrlEndpoints.PLACE_URL, place.id);
+    const url = PlaceService.constructUrlWithId(ResdbUrlEndpoints.PLACE_URL, place.id!);
     console.log('URL for marking place for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

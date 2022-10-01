@@ -3,11 +3,10 @@ import { IAuditedNameDataType } from "../interfaces/audited-name-data-type";
 import { DataStatus } from "../enums/data-status";
 import { YesNo } from "../enums/yes-no";
 import { DataAction } from "../enums/data-action";
-import { Constants } from "../constants";
 
 export class Language implements IAuditedNameDataType {
 
-  id: number;
+  id?: number;
   name: string;
   nativeName: string;
   iso6391Code1: string;
@@ -22,8 +21,8 @@ export class Language implements IAuditedNameDataType {
   notes: string;
   status: DataStatus;
   createdBy: string;
-  updatedBy: string;
-  lastUpdated: Date = Constants.UNSET_DATE_VALUE;
+  updatedBy?: string;
+  lastUpdated?: Date;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;
@@ -31,7 +30,6 @@ export class Language implements IAuditedNameDataType {
   constructor() {
     this.isDataChanged = false;
     this.selected = false;
-    this.id = 0;
     this.name = '';
     this.nativeName = '';
     this.iso6391Code1 = '';
@@ -40,7 +38,6 @@ export class Language implements IAuditedNameDataType {
     this.iso6392CodeAlpha3 = '';
     this.notes = '';
     this.createdBy = '';
-    this.updatedBy ='';
     this.action = DataAction.Add;
     this.status = DataStatus.New;
   }

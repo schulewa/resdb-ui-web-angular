@@ -1,5 +1,4 @@
 import {HistoricalDate} from './historical-date';
-import {Title} from './title';
 import {Place} from './place';
 import {PersonTitle} from './person-title';
 import {IAuditedDataType} from "../interfaces/audited-data-type";
@@ -11,7 +10,7 @@ import {PersonRole} from "./person-role";
 
 export class Person implements IAuditedDataType {
 
-  id: number;
+  id?: number;
   firstName: string;
   middleName: string;
   familyName: string;
@@ -24,8 +23,8 @@ export class Person implements IAuditedDataType {
 
   status: DataStatus;
   createdBy: string;
-  updatedBy: string;
-  lastUpdated: Date;
+  updatedBy?: string;
+  lastUpdated?: Date;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;
@@ -35,7 +34,6 @@ export class Person implements IAuditedDataType {
   titles: PersonTitle[];
 
   constructor() {
-    this.id = 0;
     this.firstName = '';
     this.middleName = '';
     this.familyName = '';
@@ -44,8 +42,6 @@ export class Person implements IAuditedDataType {
     this.dateOfDeath = Constants.UNSET_HISTORICAL_DATE_VALUE;
     this.status = DataStatus.New;
     this.createdBy = '';
-    this.updatedBy = '';
-    this.lastUpdated = Constants.UNSET_DATE_VALUE;
     this.selected = false;
     this.action = DataAction.Add;
     this.isDataChanged = false;

@@ -94,12 +94,14 @@ export abstract class AuditedNamedEntityGridComponent<T extends IAuditedNameData
       if (!auditData.createdBy) {
         auditData.createdBy = currentUser;
       }
-      if (!auditData.updatedBy) {
-        auditData.updatedBy = currentUser;
+      if (DataAction.Update == auditData.action || DataAction.Delete == auditData.action) {
+        if (!auditData.updatedBy) {
+          auditData.updatedBy = currentUser;
+        }
+        if (!auditData.lastUpdated) {
+          auditData.lastUpdated = new Date();
+        }
       }
-    }
-    if (!auditData.lastUpdated) {
-      auditData.lastUpdated = new Date();
     }
   }
 

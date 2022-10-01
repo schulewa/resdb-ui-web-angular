@@ -27,7 +27,7 @@ export class DeityTypeService {
   }
 
   delete(deityType: DeityType): Observable<DeityType> {
-    const url = DeityTypeService.constructUrlWithId(ResdbUrlEndpoints.DEITY_TYPE_URL, deityType.id);
+    const url = DeityTypeService.constructUrlWithId(ResdbUrlEndpoints.DEITY_TYPE_URL, deityType.id!);
     console.log('URL for marking deity type for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

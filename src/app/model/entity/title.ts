@@ -4,31 +4,27 @@ import {PersonTitle} from './person-title';
 import {IAuditedDataType} from "../interfaces/audited-data-type";
 import {DataStatus} from "../enums/data-status";
 import {DataAction} from "../enums/data-action";
-import {Constants} from "../constants";
 
 export class Title implements IAuditedDataType {
 
-  id: number;
+  id?: number;
   title: string;
   description: string;
   titleType: TitleType | undefined;
   appliesTo: Gender | undefined; // CodeLabel;
   status: DataStatus;
   createdBy: string;
-  updatedBy: string;
-  lastUpdated: Date;
+  updatedBy?: string;
+  lastUpdated?: Date;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;
 
   constructor() {
-    this.id = 0;
     this.title = '';
     this.description = '';
     this.status = DataStatus.New;
     this.createdBy = '';
-    this.updatedBy = '';
-    this.lastUpdated = Constants.UNSET_DATE_VALUE;
     this.selected = false;
     this.action = DataAction.Add;
     this.isDataChanged = false;

@@ -1,13 +1,11 @@
-import {IAuditedNameDataType} from "../interfaces/audited-name-data-type";
 import {DataStatus} from "../enums/data-status";
 import {DataAction} from "../enums/data-action";
-import {Constants} from "../constants";
 import {Image} from "./image";
 import {IAuditedDataType} from "../interfaces/audited-data-type";
 
 export class Country implements IAuditedDataType {
 
-  id: number;
+  id?: number;
   code: string;
   name: string;
   stateName: string;
@@ -15,14 +13,13 @@ export class Country implements IAuditedDataType {
   flagImage: Image;
   status: DataStatus;
   createdBy: string;
-  updatedBy: string;
-  lastUpdated: Date;
+  updatedBy?: string;
+  lastUpdated?: Date;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;
 
   constructor() {
-    this.id = 0;
     this.code = '';
     this.flagImage = new Image();
     this.name = '';
@@ -30,8 +27,6 @@ export class Country implements IAuditedDataType {
     this.sovereignty = '';
     this.status = DataStatus.New;
     this.createdBy = '';
-    this.updatedBy = '';
-    this.lastUpdated = Constants.UNSET_DATE_VALUE;
     this.selected = false;
     this.action = DataAction.Add;
     this.isDataChanged = false;

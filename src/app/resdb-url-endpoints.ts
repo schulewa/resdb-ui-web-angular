@@ -39,6 +39,7 @@ export class ResdbUrlEndpoints {
   public static get RACE_TYPE_URL(): string { return this.REFDATA_URL + '/racetypes'; }
   public static get REFERENCE_TYPE_URL(): string { return this.REFDATA_URL + '/referencetypes'; }
   public static get REGION_URL(): string { return this.REFDATA_URL + '/regions'; }
+  public static get ROLE_URL(): string { return this.REFDATA_URL + '/roles'; }
   public static get TALE_TYPE_URL(): string { return this.REFDATA_URL + '/taletypes'; }
   public static get TITLE_URL(): string { return this.RESEARCH_URL + '/titles'; }
   public static get TECHNOLOGY_TYPE_GROUP_URL(): string { return this.REFDATA_URL + '/technologytypegroups'; }

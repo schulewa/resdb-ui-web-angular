@@ -27,7 +27,7 @@ export class LanguageService {
   }
 
   delete(entityType: Language): Observable<Language> {
-    const url = this.constructUrlWithId(ResdbUrlEndpoints.LANGUAGE_URL, entityType.id);
+    const url = this.constructUrlWithId(ResdbUrlEndpoints.LANGUAGE_URL, entityType.id!);
     console.log('URL for marking language for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

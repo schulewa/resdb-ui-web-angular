@@ -27,7 +27,7 @@ export class EntityTypeService {
   }
 
   delete(entityType: EntityType): Observable<EntityType> {
-    const url = EntityTypeService.constructUrlWithId(ResdbUrlEndpoints.ENTITY_TYPE_URL, entityType.id);
+    const url = EntityTypeService.constructUrlWithId(ResdbUrlEndpoints.ENTITY_TYPE_URL, entityType.id!);
     console.log('URL for marking entity type for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

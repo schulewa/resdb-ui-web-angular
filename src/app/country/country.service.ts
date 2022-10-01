@@ -30,7 +30,7 @@ export class CountryService {
   }
 
   delete(country: Country): Observable<Country> {
-    const url = CountryService.constructUrlWithId(ResdbUrlEndpoints.COUNTRY_URL, country.id);
+    const url = CountryService.constructUrlWithId(ResdbUrlEndpoints.COUNTRY_URL, country.id!);
     console.log('URL for marking country for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({
