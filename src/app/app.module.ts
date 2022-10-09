@@ -12,7 +12,7 @@ import {LoginComponent} from './login/login.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HomeComponent} from './home/home.component';
 import {NgxPermissionsModule} from "ngx-permissions";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AgGridModule} from "ag-grid-angular";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { CountryComponent } from './country/country.component';
@@ -40,13 +40,14 @@ import { EditPersonComponent } from './edit-person/edit-person.component';
 import { PersonListComponent } from './person-list/person-list.component';
 import { TitlesComponent } from './titles/titles.component';
 import { PersonDetailComponent } from './person-detail/person-detail.component';
-import {MatExpansionModule} from "@angular/material/expansion";
+import { MatExpansionModule } from "@angular/material/expansion";
 import { UserComponent } from './user/user.component';
 import { UserGroupComponent } from './user-group/user-group.component';
 import { LanguageComponent } from './language/language.component';
 import { YesNoCellRendererComponent } from './cell-renderers/yes-no-cell-renderer/yes-no-cell-renderer.component';
 import { ThumbnailCellRendererComponent } from './cell-renderers/thumbnail-cell-renderer/thumbnail-cell-renderer.component';
 import { RoleComponent } from './role/role.component';
+import {AuthInterceptor} from "./interceptors/HttpInterceptor";
 
 @NgModule({
   declarations: [
@@ -104,7 +105,7 @@ import { RoleComponent } from './role/role.component';
     HttpClientModule,
     AgGridModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },],
   bootstrap: [AppComponent]
 })
 export class AppModule {

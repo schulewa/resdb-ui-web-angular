@@ -10,6 +10,7 @@ import {DateFormatters} from "../formatters/date-formatters";
 import {IAuditedDataType} from "../model/interfaces/audited-data-type";
 import {DataAction} from "../model/enums/data-action";
 import {DataPopupMenuAction} from "../model/enums/data-popup-menu-action";
+import {getCurrentUser} from "../utils/local-storage-utils";
 
 @Component({
   selector: 'app-titles',
@@ -117,7 +118,7 @@ export class TitlesComponent implements OnInit {
   }
 
   enrichAuditData(auditData: IAuditedDataType) {
-    const currentUser = localStorage.getItem('currentUser');
+    const currentUser = getCurrentUser();
     if (currentUser != null) {
       if (!auditData.createdBy) {
         auditData.createdBy = currentUser;

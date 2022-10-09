@@ -7,6 +7,7 @@ import {SecurityService} from "../security.service";
 import {CoreOperationsMessages} from "../core-operations-messages";
 import {AuthenticatedUser} from "../model/api/authenticated-user";
 import {notEmpty} from "../utils/string-utils";
+import {removeCurrentJwt, removeCurrentUser, storeCurrentJwt, storeCurrentUser} from "../utils/local-storage-utils";
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,9 @@ import {notEmpty} from "../utils/string-utils";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnChanges {
+
+  readonly CURRENT_USER = 'currentUser';
+  readonly CURRENT_JWT = 'currentJwt';
 
   loginForm: FormGroup = this.createForm();
   httpError: HttpErrorResponse | undefined;
@@ -43,10 +47,11 @@ export class LoginComponent implements OnChanges {
       .subscribe(
         authenticatedUser => {
           this.onSuccessfulLogin(authenticatedUser);
-          // localStorage.setItem('currentUser', this.loginForm.controls['userName'].value); // store the current user for later use
         },
         err => {
           console.error('login.authenticate: err="' + err);
+          removeCurrentJwt();
+          removeCurrentUser();
           this.httpError = err;
           this.operationMessage = CoreOperationsMessages.AUTHENTICATE_USER;
         }
@@ -58,7 +63,8 @@ export class LoginComponent implements OnChanges {
     const perms = authenticatedUser.permissions.map(p => p.name).filter(notEmpty);
     this.ngxPermissionsService.loadPermissions(perms);
     const loadedPerms = this.ngxPermissionsService.getPermissions();
-    localStorage.setItem('currentUser', this.loginForm.controls['userName'].value); // store the current user for later use
+    storeCurrentJwt(authenticatedUser.token);
+    storeCurrentUser(this.loginForm.controls['userName'].value);
     //
     this.httpError = undefined;
     //

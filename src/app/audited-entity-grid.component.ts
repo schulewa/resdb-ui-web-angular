@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DateFormatters } from './formatters/date-formatters';
 import { IAuditedDataType } from './model/interfaces/audited-data-type';
 import {DataPopupMenuAction} from "./model/enums/data-popup-menu-action";
+import {getCurrentUser} from "./utils/local-storage-utils";
 
 @Component({
   template: ''
@@ -90,7 +91,7 @@ export abstract class AuditedEntityGridComponent<T extends IAuditedDataType> imp
   }
 
   protected enrichAuditData(auditData: T) {
-    const currentUser = localStorage.getItem('currentUser');
+    const currentUser = getCurrentUser();
     if (currentUser != null) {
       if (!auditData.createdBy) {
         auditData.createdBy = currentUser;

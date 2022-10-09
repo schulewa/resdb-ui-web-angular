@@ -11,6 +11,7 @@ import {TitlesComponent} from "./titles/titles.component";
 import {UserComponent} from "./user/user.component";
 import {UserGroupComponent} from "./user-group/user-group.component";
 import {LanguageComponent} from "./language/language.component";
+import {MeasureTypeComponent} from "./measure-type/measure-type.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'persons', component: PersonListComponent },
   { path: 'addperson', component: PersonDetailComponent },
+  { path: 'measuretypes', component: MeasureTypeComponent },
   { path: 'places', component: PlaceComponent },
   { path: 'simple-refdata', component: SimpleRefdataComponent },
   {path: 'users', component: UserComponent},
