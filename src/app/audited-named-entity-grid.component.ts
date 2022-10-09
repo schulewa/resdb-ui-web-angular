@@ -7,6 +7,7 @@ import {IAuditedNameDataType} from "./model/interfaces/audited-name-data-type";
 import {DataStatus} from "./model/enums/data-status";
 import {DataAction} from "./model/enums/data-action";
 import {DataPopupMenuAction} from "./model/enums/data-popup-menu-action";
+import {getCurrentUser} from "./utils/local-storage-utils";
 
 @Component({
   template: ''
@@ -89,17 +90,19 @@ export abstract class AuditedNamedEntityGridComponent<T extends IAuditedNameData
   }
 
   protected enrichAuditData(auditData: IAuditedNameDataType) {
-    const currentUser = localStorage.getItem('currentUser');
+    const currentUser = getCurrentUser();
     if (currentUser != null) {
       if (!auditData.createdBy) {
         auditData.createdBy = currentUser;
       }
-      if (!auditData.updatedBy) {
-        auditData.updatedBy = currentUser;
+      if (DataAction.Update == auditData.action || DataAction.Delete == auditData.action) {
+        if (!auditData.updatedBy) {
+          auditData.updatedBy = currentUser;
+        }
+        if (!auditData.lastUpdated) {
+          auditData.lastUpdated = new Date();
+        }
       }
-    }
-    if (!auditData.lastUpdated) {
-      auditData.lastUpdated = new Date();
     }
   }
 

@@ -7,6 +7,7 @@ import {DataAction} from "../model/enums/data-action";
 import {DataStatus} from "../model/enums/data-status";
 import {TechnologyTypeGroupService} from "./technology-type-group.service";
 
+// @ts-ignore
 @Component({
   selector: 'app-technology-type-group',
   templateUrl: './technology-type-group.component.html',

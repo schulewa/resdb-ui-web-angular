@@ -28,7 +28,7 @@ export class PublicationTypeService {
   }
 
   delete(publicationType: PublicationType): Observable<MeasureType> {
-    const url = PublicationTypeService.constructUrlWithId(ResdbUrlEndpoints.PUBLICATION_TYPE_URL, publicationType.id);
+    const url = PublicationTypeService.constructUrlWithId(ResdbUrlEndpoints.PUBLICATION_TYPE_URL, publicationType.id!);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'

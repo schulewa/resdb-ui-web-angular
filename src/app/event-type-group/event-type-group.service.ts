@@ -27,7 +27,7 @@ export class EventTypeGroupService {
   }
 
   delete(entityType: EventTypeGroup): Observable<EventTypeGroup> {
-    const url = EventTypeGroupService.constructUrlWithId(ResdbUrlEndpoints.EVENT_TYPE_GROUP_URL, entityType.id);
+    const url = EventTypeGroupService.constructUrlWithId(ResdbUrlEndpoints.EVENT_TYPE_GROUP_URL, entityType.id!);
     console.log('URL for marking event type group for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

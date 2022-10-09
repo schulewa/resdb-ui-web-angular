@@ -30,7 +30,7 @@ export class PersonTypeService {
   }
 
   delete(personType: PersonType): Observable<MeasureType> {
-    const url = PersonTypeService.constructUrlWithId(ResdbUrlEndpoints.PERSON_TYPE_URL, personType.id);
+    const url = PersonTypeService.constructUrlWithId(ResdbUrlEndpoints.PERSON_TYPE_URL, personType.id!);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'

@@ -27,7 +27,7 @@ export class ImageTypeService {
   }
 
   delete(entityType: ImageType): Observable<ImageType> {
-    const url = ImageTypeService.constructUrlWithId(ResdbUrlEndpoints.IMAGE_TYPE_URL, entityType.id);
+    const url = ImageTypeService.constructUrlWithId(ResdbUrlEndpoints.IMAGE_TYPE_URL, entityType.id!);
     console.log('URL for marking image type group for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

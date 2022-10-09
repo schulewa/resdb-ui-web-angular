@@ -5,20 +5,20 @@ import {Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {ResdbUrlEndpoints} from "./resdb-url-endpoints";
 import {AuthenticatedUser} from "./model/api/authenticated-user";
+import {removeCurrentJwt, removeCurrentUser} from "./utils/local-storage-utils";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SecurityService {
 
-  readonly CURRENT_USER = 'currentUser';
-
   private currentUserSubject: BehaviorSubject<User> | undefined;
   public currentUser: Observable<User> | undefined;
 
   private authenticated: boolean;
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router,
+              private http: HttpClient) {
     this.authenticated = false;
   }
 
@@ -29,10 +29,11 @@ export class SecurityService {
   }
 
   logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem(this.CURRENT_USER);
+    // remove user and jwt from local storage to log user out
+    removeCurrentJwt();
+    removeCurrentUser();
     this.authenticated = false;
-    this.router.navigate(['Login']); // TODO should this be 'login' ?
+    this.router.navigate(['login']);
   }
 
   // public get currentUserValue(): User {

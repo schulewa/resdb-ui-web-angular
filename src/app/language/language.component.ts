@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Language} from "../model/entity/language";
-import {AuditedNamedEntityGridComponent} from "../audited-named-entity-grid.component";
 import {LanguageService} from "./language.service";
 import {DateFormatters} from "../formatters/date-formatters";
 import {CoreOperationsMessages} from "../core-operations-messages";
@@ -12,6 +11,7 @@ import {YesNoCellRendererComponent} from "../cell-renderers/yes-no-cell-renderer
 import {HttpErrorResponse} from "@angular/common/http";
 import {PopupMenuComponent} from "../popup-menu/popup-menu.component";
 import {DataPopupMenuAction} from "../model/enums/data-popup-menu-action";
+import {getCurrentUser} from "../utils/local-storage-utils";
 
 @Component({
   selector: 'app-language',
@@ -142,7 +142,7 @@ export class LanguageComponent implements OnInit { //extends AuditedNamedEntityG
   }
 
   protected enrichAuditData(auditData: IAuditedNameDataType) {
-    const currentUser = localStorage.getItem('currentUser');
+    const currentUser = getCurrentUser();
     if (currentUser != null) {
       if (!auditData.createdBy) {
         auditData.createdBy = currentUser;

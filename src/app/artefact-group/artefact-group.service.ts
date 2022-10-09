@@ -27,7 +27,7 @@ export class ArtefactGroupService {
   }
 
   delete(artefactGroup: ArtefactGroup): Observable<ArtefactGroup> {
-    const url = ArtefactGroupService.constructUrlWithId(ResdbUrlEndpoints.ARTEFACT_GROUP_URL, artefactGroup.id);
+    const url = ArtefactGroupService.constructUrlWithId(ResdbUrlEndpoints.ARTEFACT_GROUP_URL, artefactGroup.id!);
     console.log('URL for marking artefact group for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

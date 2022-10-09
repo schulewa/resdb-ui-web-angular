@@ -27,7 +27,7 @@ export class TaleTypeService {
   }
 
   delete(taleType: TaleType): Observable<TaleType> {
-    const url = TaleTypeService.constructUrlWithId(ResdbUrlEndpoints.TALE_TYPE_URL, taleType.id);
+    const url = TaleTypeService.constructUrlWithId(ResdbUrlEndpoints.TALE_TYPE_URL, taleType.id!);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'

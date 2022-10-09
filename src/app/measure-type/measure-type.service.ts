@@ -27,7 +27,7 @@ export class MeasureTypeService {
   }
 
   delete(measureType: MeasureType): Observable<MeasureType> {
-    const url = MeasureTypeService.constructUrlWithId(ResdbUrlEndpoints.MEASURE_TYPE_URL, measureType.id);
+    const url = MeasureTypeService.constructUrlWithId(ResdbUrlEndpoints.MEASURE_TYPE_URL, measureType.id!);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'

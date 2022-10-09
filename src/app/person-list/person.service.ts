@@ -3,8 +3,6 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, Observable, of, tap} from "rxjs";
 import {Person} from "../model/entity/person";
 import {ResdbUrlEndpoints} from "../resdb-url-endpoints";
-import {PersonApi} from "../model/api/person-api";
-import {AddressType} from "../model/entity/address-type";
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +39,7 @@ export class PersonService {
   }
 
   delete(person: Person): Observable<Person> {
-    const url = this.constructUrlWithId(ResdbUrlEndpoints.PERSON_URL, person.id);
+    const url = this.constructUrlWithId(ResdbUrlEndpoints.PERSON_URL, person.id!);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'

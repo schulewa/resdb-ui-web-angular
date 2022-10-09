@@ -27,7 +27,7 @@ export class CalendarTypeService {
   }
 
   delete(calendarType: CalendarType): Observable<CalendarType> {
-    const url = CalendarTypeService.constructUrlWithId(ResdbUrlEndpoints.CALENDAR_TYPE_URL, calendarType.id);
+    const url = CalendarTypeService.constructUrlWithId(ResdbUrlEndpoints.CALENDAR_TYPE_URL, calendarType.id!);
     console.log('URL for marking calendar type for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({

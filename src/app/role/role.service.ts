@@ -1,51 +1,51 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {AddressType} from "../model/entity/address-type";
 import {ResdbUrlEndpoints} from "../resdb-url-endpoints";
 import {Observable, of} from "rxjs";
+import {Role} from "../model/entity/role";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AddressTypeService {
+export class RoleService {
 
   constructor(private http: HttpClient) { }
 
-  findAll(): Observable<AddressType[]> {
-    const url = ResdbUrlEndpoints.ADDRESS_TYPE_URL;
-    return this.http.get<AddressType[]>(url);
+  findAll(): Observable<Role[]> {
+    const url = ResdbUrlEndpoints.ROLE_URL;
+    return this.http.get<Role[]>(url);
   }
 
-  add(addressType: AddressType): Observable<AddressType> {
-    const url = ResdbUrlEndpoints.ADDRESS_TYPE_URL;
+  add(role: Role): Observable<Role> {
+    const url = ResdbUrlEndpoints.ROLE_URL;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'
       })
     };
-    return this.http.post<AddressType>(url, addressType, httpOptions);
+    return this.http.post<Role>(url, role, httpOptions);
   }
 
-  delete(addressType: AddressType): Observable<AddressType> {
-    const url = AddressTypeService.constructUrlWithId(ResdbUrlEndpoints.ADDRESS_TYPE_URL, addressType.id!);
-    console.log('URL for marking address type for deletion=[' + url + ']');
+  delete(role: Role): Observable<Role> {
+    const url = RoleService.constructUrlWithId(ResdbUrlEndpoints.ROLE_URL, role.id!);
+    console.log('URL for marking role for deletion=[' + url + ']');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'
       })
     };
-    console.log('AddressTypeService: marking ' + addressType.name + ' for deletion');
-    return this.http.delete<AddressType>(url, httpOptions);
+    console.log('RoleService: marking ' + role.name + ' for deletion');
+    return this.http.delete<Role>(url, httpOptions);
   }
 
-  update(addressType: AddressType): Observable<AddressType> {
-    const url = ResdbUrlEndpoints.ADDRESS_TYPE_URL;
+  update(role: Role): Observable<Role> {
+    const url = ResdbUrlEndpoints.ROLE_URL;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'
       })
     };
-    return this.http.put<AddressType>(url, addressType, httpOptions);
+    return this.http.put<Role>(url, role, httpOptions);
   }
 
   private static constructUrlWithId(baseUrl: string, id: number): string {

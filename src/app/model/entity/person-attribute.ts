@@ -1,13 +1,11 @@
 import {Person} from './person';
-import {Title} from './title';
 import {DataStatus} from "../enums/data-status";
-import {Constants} from "../constants";
 import {DataAction} from "../enums/data-action";
 import {AttributeType} from "./attribute-type";
 
 export class PersonAttribute {
 
-  id: number | undefined;
+  id?: number | undefined;
 
   person: Person | undefined;
   attributeType: AttributeType | undefined;
@@ -17,8 +15,8 @@ export class PersonAttribute {
 
   status: DataStatus;
   createdBy: string;
-  updatedBy: string;
-  lastUpdated: Date;
+  updatedBy?: string;
+  lastUpdated?: Date;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;
@@ -26,8 +24,6 @@ export class PersonAttribute {
   constructor() {
     this.status = DataStatus.New;
     this.createdBy = '';
-    this.updatedBy = '';
-    this.lastUpdated = Constants.UNSET_DATE_VALUE;
     this.selected = false;
     this.action = DataAction.Add;
     this.isDataChanged = false;

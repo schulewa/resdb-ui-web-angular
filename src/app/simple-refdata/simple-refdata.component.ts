@@ -128,12 +128,20 @@ export class SimpleRefdataComponent implements OnInit, OnChanges {
     return this.formContains('refDataType', 'Race type');
   }
 
+  isRoleDataRefType(): boolean {
+    return this.formContains('refDataType', 'Role');
+  }
+
   isTaleTypeDataRefType(): boolean {
     return this.formContains('refDataType', 'Tale type');
   }
 
   isTechnologyTypeGroupDataRefType(): boolean {
     return this.formContains('refDataType', 'Technology type group');
+  }
+
+  isTitleDataRefType(): boolean {
+    return this.formContains('refDataType', 'Title');
   }
 
   formContains(controlName: string, value: string): boolean {

@@ -31,7 +31,9 @@
               <option>Person type</option>
               <option>Publication type</option>
               <option>Race type</option>
+              <option>Role</option>
               <option>Tale type</option>
+              <option>Title</option>
               <option>Technology type group</option>
             </select>
 
@@ -45,7 +47,7 @@
 
   </div>
 
-  <div class="row">
+  <div class="row" style="margin-left: 10px;">
 
     <div *ngIf="!disableRefDataTypeSubmit()">
 
@@ -79,9 +81,13 @@
 
         <app-race-type *ngIf="isRaceTypeDataRefType()"></app-race-type>
 
+        <app-role *ngIf="isRoleDataRefType()"></app-role>
+
         <app-tale-type *ngIf="isTaleTypeDataRefType()"></app-tale-type>
 
-        <app-technology-type-group *ngIf="isTechnologyTypeGroupDataRefType()"></app-technology-type-group>
+        <app-titles *ngIf="isTechnologyTypeGroupDataRefType()"></app-titles>
+
+        <app-tale-type *ngIf="isTitleDataRefType()"></app-tale-type>
 
       </div>
 

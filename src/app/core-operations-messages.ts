@@ -53,47 +53,52 @@ export class CoreOperationsMessages {
   public static get DELETE_IMAGE_TYPE(): string { return 'Attempting to mark image type for deletion'; }
   public static get UPDATE_IMAGE_TYPE(): string { return 'Attempting to update image type'; }
 
-    public static get FINDALL_LANGUAGE(): string { return 'Attempting to final all live languages'; }
+    public static get FINDALL_LANGUAGE(): string { return 'Attempting to find all live languages'; }
     public static get ADD_LANGUAGE(): string { return 'Attempting to add new language'; }
     public static get DELETE_LANGUAGE(): string { return 'Attempting to mark language for deletion'; }
     public static get UPDATE_LANGUAGE(): string { return 'Attempting to update language'; }
 
-  public static get FINDALL_LANGUAGE_GROUP(): string { return 'Attempting to final all live language groups'; }
+  public static get FINDALL_LANGUAGE_GROUP(): string { return 'Attempting to find all live language groups'; }
   public static get ADD_LANGUAGE_GROUP(): string { return 'Attempting to add new language group'; }
   public static get DELETE_LANGUAGE_GROUP(): string { return 'Attempting to mark language group for deletion'; }
   public static get UPDATE_LANGUAGE_GROUP(): string { return 'Attempting to update language group'; }
 
-  public static get FINDALL_MEASURE_TYPE(): string { return 'Attempting to final all live measure types'; }
+  public static get FINDALL_MEASURE_TYPE(): string { return 'Attempting to find all live measure types'; }
   public static get ADD_MEASURE_TYPE(): string { return 'Attempting to add new measure type'; }
   public static get DELETE_MEASURE_TYPE(): string { return 'Attempting to mark measure type for deletion'; }
   public static get UPDATE_MEASURE_TYPE(): string { return 'Attempting to update measure type'; }
 
-  public static get FINDALL_PERSON(): string { return 'Attempting to final all live persons'; }
+  public static get FINDALL_PERSON(): string { return 'Attempting to find all live persons'; }
   public static get ADD_PERSON(): string { return 'Attempting to add new person'; }
   public static get DELETE_PERSON(): string { return 'Attempting to mark person for deletion'; }
   public static get UPDATE_PERSON(): string { return 'Attempting to update person'; }
 
-  public static get FINDALL_PERSON_TYPE(): string { return 'Attempting to final all live person types'; }
+  public static get FINDALL_PERSON_TYPE(): string { return 'Attempting to find all live person types'; }
   public static get ADD_PERSON_TYPE(): string { return 'Attempting to add new person type'; }
   public static get DELETE_PERSON_TYPE(): string { return 'Attempting to mark person type for deletion'; }
   public static get UPDATE_PERSON_TYPE(): string { return 'Attempting to update person type'; }
 
-    public static get FINDALL_PLACE(): string { return 'Attempting to final all live places'; }
+    public static get FINDALL_PLACE(): string { return 'Attempting to find all live places'; }
     public static get ADD_PLACE(): string { return 'Attempting to add new place'; }
     public static get DELETE_PLACE(): string { return 'Attempting to mark place for deletion'; }
     public static get UPDATE_PLACE(): string { return 'Attempting to update place'; }
 
-  public static get FINDALL_PUBLICATION_TYPE(): string { return 'Attempting to final all live publication types'; }
+  public static get FINDALL_PUBLICATION_TYPE(): string { return 'Attempting to find all live publication types'; }
   public static get ADD_PUBLICATION_TYPE(): string { return 'Attempting to add new publication type'; }
   public static get DELETE_PUBLICATION_TYPE(): string { return 'Attempting to mark publication type for deletion'; }
   public static get UPDATE_PUBLICATION_TYPE(): string { return 'Attempting to update publication type'; }
 
-  public static get FINDALL_RACE_TYPE(): string { return 'Attempting to final all live race types'; }
+  public static get FINDALL_RACE_TYPE(): string { return 'Attempting to find all live race types'; }
   public static get ADD_RACE_TYPE(): string { return 'Attempting to add new race type'; }
   public static get DELETE_RACE_TYPE(): string { return 'Attempting to mark race type for deletion'; }
   public static get UPDATE_RACE_TYPE(): string { return 'Attempting to update race type'; }
 
-  public static get FINDALL_TALE_TYPE(): string { return 'Attempting to final all live tale types'; }
+  public static get FINDALL_ROLE(): string { return 'Attempting to find all live roles'; }
+  public static get ADD_ROLE(): string { return 'Attempting to add new role'; }
+  public static get DELETE_ROLE(): string { return 'Attempting to mark role for deletion'; }
+  public static get UPDATE_ROLE(): string { return 'Attempting to update role'; }
+
+  public static get FINDALL_TALE_TYPE(): string { return 'Attempting to find all live tale types'; }
   public static get ADD_TALE_TYPE(): string { return 'Attempting to add new tale type'; }
   public static get DELETE_TALE_TYPE(): string { return 'Attempting to mark tale type for deletion'; }
   public static get UPDATE_TALE_TYPE(): string { return 'Attempting to update tale type'; }
@@ -103,7 +108,7 @@ export class CoreOperationsMessages {
   public static get DELETE_TITLE(): string { return 'Attempting to mark title for deletion'; }
   public static get UPDATE_TITLE(): string { return 'Attempting to update title'; }
 
-  public static get FINDALL_TECHNOLOGY_TYPE_GROUP(): string { return 'Attempting to final all live technology type groups'; }
+  public static get FINDALL_TECHNOLOGY_TYPE_GROUP(): string { return 'Attempting to find all live technology type groups'; }
   public static get ADD_TECHNOLOGY_TYPE_GROUP(): string { return 'Attempting to add new technology type group'; }
   public static get DELETE_TECHNOLOGY_TYPE_GROUP(): string { return 'Attempting to mark technology type group for deletion'; }
   public static get UPDATE_TECHNOLOGY_TYPE_GROUP(): string { return 'Attempting to update technology type group'; }

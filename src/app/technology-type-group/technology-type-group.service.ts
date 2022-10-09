@@ -28,7 +28,7 @@ export class TechnologyTypeGroupService {
   }
 
   delete(technologyTypeGroup: TechnologyTypeGroup): Observable<RaceType> {
-    const url = TechnologyTypeGroupService.constructUrlWithId(ResdbUrlEndpoints.TECHNOLOGY_TYPE_GROUP_URL, technologyTypeGroup.id);
+    const url = TechnologyTypeGroupService.constructUrlWithId(ResdbUrlEndpoints.TECHNOLOGY_TYPE_GROUP_URL, technologyTypeGroup.id!);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'

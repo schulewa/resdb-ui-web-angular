@@ -27,7 +27,7 @@ export class TitlesService {
   }
 
   delete(title: Title): Observable<Title> {
-    const url = TitlesService.constructUrlWithId(ResdbUrlEndpoints.TITLE_URL, title.id);
+    const url = TitlesService.constructUrlWithId(ResdbUrlEndpoints.TITLE_URL, title.id!);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8'
