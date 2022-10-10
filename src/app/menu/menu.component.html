@@ -63,7 +63,7 @@
         <button mat-menu-item [matMenuTriggerFor]="timeMenu">Time</button>
       </div>
 
-      <div>
+      <div *ngxPermissionsOnly="['MENU_SIMPLE_REF_DATA']">
         <button mat-menu-item routerLink="/simple-refdata">Simple Reference Data</button>
       </div>
 
