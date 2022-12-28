@@ -3,6 +3,8 @@ import {UserGroupMembership} from './user-group-membership';
 import {IAuditedDataType} from "../interfaces/audited-data-type";
 import {DataStatus} from "../enums/data-status";
 import {DataAction} from "../enums/data-action";
+import {UserPassword} from "./user-password";
+import {Language} from "./language";
 
 export class User implements IAuditedDataType {
   firstName: string | undefined;
@@ -11,13 +13,16 @@ export class User implements IAuditedDataType {
   id?: number;
   loginPassword: string | undefined;
   logonName: string | undefined;
-  preferredLanguage: string | undefined;
+  passwords: UserPassword[] = [];
+  preferredLanguage: Language | undefined;
   jwtToken: string | undefined;
   status: DataStatus;
   // @ts-ignore
-  createdBy: string;
-  updatedBy?: string;
-  lastUpdated?: Date;
+  versionCreatedBy?: string;
+  versionLastUpdated?: Date;
+  versionNumber?: number;
+  versionUpdatedBy?: string;
+  versionStatus?: DataStatus;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;

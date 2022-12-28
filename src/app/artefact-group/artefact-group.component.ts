@@ -52,7 +52,8 @@ export class ArtefactGroupComponent extends AuditedNamedEntityGridComponent<Arte
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const artefactGroup of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const artefactGroup = datum as ArtefactGroup;
         if (DataAction.Add === artefactGroup.action) {
           this.enrichAuditData(artefactGroup);
           this.artefactGroupService.add(artefactGroup).subscribe(
@@ -66,7 +67,7 @@ export class ArtefactGroupComponent extends AuditedNamedEntityGridComponent<Arte
               this.operationMessage = CoreOperationsMessages.ADD_ARTEFACT_GROUP;
             });
         } else if (DataAction.Update === artefactGroup.action) {
-          artefactGroup.status = DataStatus.Amend;
+          artefactGroup.versionStatus = DataStatus.Amend;
           this.artefactGroupService.update(artefactGroup).subscribe(
             data => {
               this.httpError = undefined;
@@ -79,12 +80,12 @@ export class ArtefactGroupComponent extends AuditedNamedEntityGridComponent<Arte
             }
           );
         } else if (DataAction.Delete === artefactGroup.action) {
-          artefactGroup.status = DataStatus.Delete;
+          artefactGroup.versionStatus = DataStatus.Delete;
           this.artefactGroupService.delete(artefactGroup).subscribe(
             data => {
               console.log('Artefact group ' + artefactGroup.action + 'ed - result=' + data);
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

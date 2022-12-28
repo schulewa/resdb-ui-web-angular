@@ -53,7 +53,8 @@ export class MeasureTypeComponent extends AuditedNamedEntityGridComponent<Measur
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const measureType of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const measureType = datum as MeasureType;
         if (DataAction.Add === measureType.action) {
           this.operationMessage = CoreOperationsMessages.ADD_MEASURE_TYPE;
           this.enrichAuditData(measureType);
@@ -67,7 +68,7 @@ export class MeasureTypeComponent extends AuditedNamedEntityGridComponent<Measur
             });
         } else if (DataAction.Update === measureType.action) {
           this.operationMessage = CoreOperationsMessages.UPDATE_MEASURE_TYPE;
-          measureType.status = DataStatus.Amend;
+          measureType.versionStatus = DataStatus.Amend;
           this.measureTypeService.update(measureType).subscribe(
             data => {
               this.httpError = undefined;
@@ -79,11 +80,11 @@ export class MeasureTypeComponent extends AuditedNamedEntityGridComponent<Measur
           );
         } else if (DataAction.Delete === measureType.action) {
           this.operationMessage = CoreOperationsMessages.DELETE_MEASURE_TYPE;
-          measureType.status = DataStatus.Delete;
+          measureType.versionStatus = DataStatus.Delete;
           this.measureTypeService.delete(measureType).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

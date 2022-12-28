@@ -6,7 +6,6 @@ import {AuditedEntityGridComponent} from "../audited-entity-grid.component";
 import {PersonService} from "./person.service";
 import {Router} from "@angular/router";
 import {CoreOperationsMessages} from "../core-operations-messages";
-import {IAuditedNameDataType} from "../model/interfaces/audited-name-data-type";
 import {DataMode} from "../model/enums/data-mode";
 
 @Component({
@@ -26,6 +25,7 @@ export class PersonListComponent extends AuditedEntityGridComponent<Person> impl
   }
 
   protected initRowData(): Person[] {
+    console.log('app-person: initRowData');
     this.rowData = [];
     //
     this.operationMessage = CoreOperationsMessages.FINDALL_PERSON;
@@ -82,7 +82,7 @@ export class PersonListComponent extends AuditedEntityGridComponent<Person> impl
   }
 
   protected override onCellValueChanged(event: any) {
-    console.log('onCellValueChanged - entry: event=' + event + ' haveEmptyRow=' + this.haveEmptyRow);
+    console.log('app-person: onCellValueChanged - entry: event=' + event + ' haveEmptyRow=' + this.haveEmptyRow);
     if (event.data && event.data.id && event.data.id > 0) {
       event.data.action = DataAction.Update;
       this.gridApi!.refreshCells();
@@ -93,7 +93,7 @@ export class PersonListComponent extends AuditedEntityGridComponent<Person> impl
       this.haveEmptyRow = false;
     }
 
-    console.log('onCellValueChanged - exit: haveEmptyRow=' + this.haveEmptyRow);
+    console.log('app-person: onCellValueChanged - exit: haveEmptyRow=' + this.haveEmptyRow);
   }
 
   mapStatus(value: any): DataStatus {
@@ -111,22 +111,14 @@ export class PersonListComponent extends AuditedEntityGridComponent<Person> impl
     }
   }
 
-  // isAddMode(): boolean {
-  //   return DataMode.Add === this.dataMode;
-  // }
-  //
-  // isEditMode(): boolean {
-  //   return DataMode.Update === this.dataMode;
-  // }
-
   addPerson() {
-    console.log('TODO: redirect to /person but with null Person as Input');
+    console.log('app-person: addPerson - TODO redirect to /person but with null Person as Input');
     this.showGrid = false;
     this.dataMode = DataMode.Add;
   }
 
   editPerson() {
-    console.log('TODO: redirect to /person-detail but with the Person as Input');
+    console.log('app-person: editPerson - TODO redirect to /person-detail but with the Person as Input');
     this.showGrid = false;
     this.dataMode = DataMode.Update;
     // TODO set variables for EDIT in person-detail.component.html/.ts to this.selectedRow
@@ -137,7 +129,7 @@ export class PersonListComponent extends AuditedEntityGridComponent<Person> impl
   //
 
   revertChanges() {
-    console.log('PersonListComponent.revertChanges: TODO');
+    console.log('app-person: revertChanges: TODO');
   }
 
   haveDataChanges(): boolean {
@@ -146,7 +138,7 @@ export class PersonListComponent extends AuditedEntityGridComponent<Person> impl
   }
 
   saveChanges() {
-    console.log('PersonListComponent.saveChanges - entry - number of rows = ' + this.rowData.length);
+    console.log('app-person: saveChanges - entry - number of rows = ' + this.rowData.length);
     // save only new and modified rows
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
@@ -165,7 +157,7 @@ export class PersonListComponent extends AuditedEntityGridComponent<Person> impl
             });
         } else if (DataAction.Update === raceType.action) {
           this.operationMessage = CoreOperationsMessages.UPDATE_TALE_TYPE;
-          raceType.status = DataStatus.Amend;
+          raceType.versionStatus = DataStatus.Amend;
           this.personService.update(raceType).subscribe(
             data => {
               this.httpError = undefined;
@@ -177,11 +169,11 @@ export class PersonListComponent extends AuditedEntityGridComponent<Person> impl
           );
         } else if (DataAction.Delete === raceType.action) {
           this.operationMessage = CoreOperationsMessages.DELETE_TALE_TYPE;
-          raceType.status = DataStatus.Delete;
+          raceType.versionStatus = DataStatus.Delete;
           this.personService.delete(raceType).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: Person[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: Person[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },
@@ -196,6 +188,7 @@ export class PersonListComponent extends AuditedEntityGridComponent<Person> impl
   }
 
   protected override updateGrid(saved: Person) {
+    console.log('app-person: updateGrid')
     if (saved && saved.firstName && saved.familyName) {
       const newRowData: Person[] = [];
       this.rowData.forEach((entry) => {
@@ -214,7 +207,7 @@ export class PersonListComponent extends AuditedEntityGridComponent<Person> impl
 
   protected override onSelectionChanged(event: any) {
     const rowCount = event.api.getSelectedNodes().length;
-    console.log('PersonListComponent.onSelectionChanged: ' + rowCount + ' rows selected');
+    console.log('app-person: onSelectionChanged: ' + rowCount + ' rows selected');
     const selectedRows = event.api.getSelectedNodes();
     if (selectedRows && selectedRows.length === 1) {
       this.selectedRow = selectedRows[0].data;

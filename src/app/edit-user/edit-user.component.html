@@ -1,0 +1,283 @@
+<div *ngIf="user && user.id">
+  <h3>Existing user: {{user.firstName}} {{user.familyName}}</h3>
+</div>
+
+<div style="overflow:scroll; height: 80%; margin-left: 10px;">
+
+  <div>
+
+    <form class="form-horizontal" [formGroup]="this.getUserForm()">
+
+      <div class="row"> <!-- start of row 1 -->
+
+        <div class="col-sm-12 d-inline-flex mt-3 mb-3">
+
+          <label
+            class="col-sm-2 form-label text-right"
+            for="firstName">First name</label>
+
+          <input type="text" id="firstName" name="firstName"
+                 formControlName="firstName"
+                 maxlength="30" size="30"
+                 class="form-control col-sm-4"
+                 style="width: 25%"/>
+
+          <div
+            *ngIf="this.hasFirstNameFieldChanged()"
+            class="alert alert-danger">
+            First name must be provided
+          </div>
+
+          <label
+            class="col-sm-2 form-label text-right"
+            style="margin-left: 20px; "
+            for="familyName">Family name</label>
+
+          <input type="text" id="familyName" name="familyName" formControlName="familyName"
+                 maxlength="50" size="30"
+                 class="form-control col-sm-4"
+                 style="width: 25%"/>
+
+          <div
+            *ngIf="this.hasFamilyNameFieldChanged()"
+            class="alert alert-danger">
+            Family name must be provided
+          </div>
+
+        </div>
+
+      </div> <!-- end of row 1 -->
+
+      <div class="row"> <!-- start of row 2 -->
+
+        <div class="col-sm-12 d-inline-flex mt-3 mb-3">
+
+          <label
+            class="col-sm-2 form-label text-right"
+            for="preferredLanguage">Preferred Language</label>
+
+          <select
+            class="col-sm-3 custom-select mb-3"
+            id="preferredLanguage"
+            name="preferredLanguage"
+            formControlName="preferredLanguage"
+            (change)="onChangeLanguage($event)"
+            [compareWith]="compareLanguage">
+            <option *ngFor="let language of getLanguages()"
+                    [ngValue]="language"
+                    [selected]="language===getFormControl('preferredLanguage').value"
+            >{{language.name}}</option>
+          </select>
+
+          <div class="invalid-feedback" *ngIf="getFormControl('preferredLanguage').invalid">
+            <sup>*</sup>Please select language
+          </div>
+
+        </div>
+
+      </div> <!-- end of row 2 -->
+
+      <div class="row"> <!-- start of row 3 -->
+
+        <div class="col-sm-12 d-inline-flex mt-3 mb-3">
+
+          <label
+            class="col-sm-2 form-label text-right"
+            for="logonName">Logon name</label>
+
+          <input type="text"
+                 id="logonName"
+                 name="logonName"
+                 formControlName="logonName"
+                 maxlength="20" size="20"
+                 style="width: 25%;"
+                 class="form-control col-sm-4"/>
+
+          <div
+            *ngIf="this.isLogonNameFieldInvalid()"
+            class="alert alert-danger">
+            Logon name must be provided
+          </div>
+
+          <label
+            class="col-sm-2 form-label text-right"
+            style="margin-left: 10px;"
+            for="lastLogon">Last logon</label>
+
+          <input type="text"
+                 id="lastLogon"
+                 name="lastLogon"
+                 formControlName="lastLogon"
+                 style="width: 25%;"
+                 class="form-control col-sm-4"
+                 readonly
+          />
+
+        </div>
+
+      </div> <!-- end of row 3 -->
+
+      <div class="row"> <!-- start of row 4 -->
+
+        <div class="col-sm-12 d-inline-flex mt-3 mb-3">
+
+          <label
+            class="col-sm-2 form-label text-right"
+            for="logonName">Invalid access count</label>
+
+          <input type="text"
+                 id="invalidAccessCount"
+                 name="invalidAccessCount"
+                 formControlName="invalidAccessCount"
+                 style="width: 25%;"
+                 class="form-control col-sm-4"
+                 readonly
+          />
+
+        </div>
+
+      </div> <!-- end of row 4 -->
+
+      <div class="row">
+
+        <label
+          class="col-sm-2 form-label text-right"
+          for="logonName">Created by</label>
+
+        <input type="text"
+               id="createdBy"
+               name="createdBy"
+               formControlName="createdBy"
+               style="width: 25%;"
+               class="form-control col-sm-4"
+               readonly
+        />
+
+      </div>
+
+
+      <div class="row"
+           style="margin-top: 20px; margin-left: 10px;"
+           id="groups"> <!-- start of row 4 -->
+
+        <div style="margin-left: -10px;" class="col-md-12">
+
+          <button class="btn text-primary"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#groupmemberships"
+                  aria-expanded="false"
+                  aria-controls="groupmemberships"
+                  (click)="openCloseGroupMembershipsPanel()"
+          >
+            Group Memberships V
+          </button>
+
+          <p>
+            Maintain the list of selected group memberships for this user. Use checkbox to set memberships for user.
+            These will be committed when details are saved.
+            <!--            <a class="btn btn-primary"-->
+            <!--               data-toggle="collapse"-->
+            <!--               href="#groupmemberships"-->
+            <!--               role="button"-->
+            <!--               aria-expanded="false"-->
+            <!--               aria-controls="groupmemberships">-->
+            <!--              Group Memberships-->
+            <!--            </a>-->
+
+          </p>
+          <div *ngIf="showUserGroupMembershipsPanel" class="collapse" id="groupmemberships">
+            SHOW GROUP MEMBERSHIPS
+            <div class="">
+
+              <ag-grid-angular style="width: 100%; height: 250px;"
+                               class="ag-theme-balham"
+                               [rowData]="getUserGroupMembershipRowData()"
+                               (selectionChanged)="onUserGroupMembershipSelectionChanged($event)"
+                               (cellValueChanged)="onUserGroupMembershipCellValueChanged($event)"
+                               [columnDefs]="getUserGroupMembershipColumnDefs()"
+                               (gridReady)="onUserGroupMembershipGridReady($event)">
+              </ag-grid-angular>
+
+            </div>
+          </div>
+
+          <!--          <mat-expansion-panel>-->
+
+          <!--            <mat-expansion-panel-header>-->
+          <!--              <div>-->
+          <!--                <p>-->
+          <!--                  <mat-panel-title><b>Group Memberships</b></mat-panel-title>-->
+          <!--                </p>-->
+          <!--              </div>-->
+          <!--              <mat-panel-description>-->
+          <!--                Maintain the list of selected group membersghips for this user. Use checkbox to set titles for person.-->
+          <!--                These will be committed when details are saved.-->
+          <!--              </mat-panel-description>-->
+          <!--            </mat-expansion-panel-header>-->
+
+          <!--            <ag-grid-angular style="width: 100%; height: 250px;"-->
+          <!--                             class="ag-theme-balham"-->
+          <!--                             [rowData]="getUserGroupMembershipRowData()"-->
+          <!--                             (selectionChanged)="onUserGroupMembershipSelectionChanged($event)"-->
+          <!--                             (cellValueChanged)="onUserGroupMembershipCellValueChanged($event)"-->
+          <!--                             [columnDefs]="getUserGroupMembershipColumnDefs()"-->
+          <!--                             (gridReady)="onUserGroupMembershipGridReady($event)">-->
+          <!--            </ag-grid-angular>-->
+
+          <!--          </mat-expansion-panel>-->
+
+        </div>
+
+      </div>
+
+      <div class="row"
+           style="margin-top: 20px;"
+           id="passwords">
+        <p class="">TODO add password history with option to reset</p>
+      </div>
+
+      <!--</div>-->
+
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-info float-right" [disabled]="!haveGroupDataChanges()"
+                (click)="revertChanges()">Revert changes
+        </button>
+        <button type="button" class="btn btn-success float-right" [disabled]="!haveGroupDataChanges()"
+                (click)="saveChanges()">Commit changes
+        </button>
+      </div>
+
+    </form>
+
+
+  </div>
+
+</div>
+
+<div class="btn-toolbar" style="margin-top: 20px; margin-outside: 2px; height: 5%;">
+  <button
+    id="closeFormButton"
+    type="close"
+    class="btn btn-danger"
+    (click)="closeForm()">Close Form
+  </button>
+
+  <button
+    id="resetFormButton"
+    type="reset"
+    class="btn btn-info mx-3">Clear Form
+  </button>
+
+  <button
+    id="saveFormButton"
+    type="button"
+    class="btn btn-success"
+    (click)="saveChanges()">Submit
+  </button>
+</div>
+
+<div *ngIf="httpError">
+  <app-error-message [failedOperation]="operationMessage" [error]="httpError"></app-error-message>
+</div>

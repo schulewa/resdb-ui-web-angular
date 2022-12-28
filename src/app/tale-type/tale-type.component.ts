@@ -49,11 +49,12 @@ export class TaleTypeComponent extends AuditedNamedEntityGridComponent<TaleType>
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const raceType of toBeSaved) {
-        if (DataAction.Add === raceType.action) {
+      for (const datum of toBeSaved) {
+        const taleType = datum as TaleType;
+        if (DataAction.Add === taleType.action) {
           this.operationMessage = CoreOperationsMessages.ADD_TALE_TYPE;
-          this.enrichAuditData(raceType);
-          this.taleTypeService.add(raceType).subscribe(
+          this.enrichAuditData(taleType);
+          this.taleTypeService.add(taleType).subscribe(
             data => {
               this.httpError = undefined;
               this.updateGrid(data);
@@ -61,10 +62,10 @@ export class TaleTypeComponent extends AuditedNamedEntityGridComponent<TaleType>
             err => {
               this.httpError = err;
             });
-        } else if (DataAction.Update === raceType.action) {
+        } else if (DataAction.Update === taleType.action) {
           this.operationMessage = CoreOperationsMessages.UPDATE_TALE_TYPE;
-          raceType.status = DataStatus.Amend;
-          this.taleTypeService.update(raceType).subscribe(
+          taleType.versionStatus = DataStatus.Amend;
+          this.taleTypeService.update(taleType).subscribe(
             data => {
               this.httpError = undefined;
               this.updateGrid(data);
@@ -73,13 +74,13 @@ export class TaleTypeComponent extends AuditedNamedEntityGridComponent<TaleType>
               this.httpError = err;
             }
           );
-        } else if (DataAction.Delete === raceType.action) {
+        } else if (DataAction.Delete === taleType.action) {
           this.operationMessage = CoreOperationsMessages.DELETE_TALE_TYPE;
-          raceType.status = DataStatus.Delete;
-          this.taleTypeService.delete(raceType).subscribe(
+          taleType.versionStatus = DataStatus.Delete;
+          this.taleTypeService.delete(taleType).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

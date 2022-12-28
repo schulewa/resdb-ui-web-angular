@@ -8,10 +8,11 @@ export class AttributeType implements IAuditedNameDataType {
   id?: number;
   name: string;
   dataType: DataType;
-  status: DataStatus;
-  createdBy: string;
-  updatedBy?: string;
-  lastUpdated?: Date;
+  versionStatus?: DataStatus;
+  versionCreatedBy?: string;
+  versionNumber?: number;
+  versionUpdatedBy?: string;
+  versionLastUpdated?: Date;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;
@@ -19,16 +20,18 @@ export class AttributeType implements IAuditedNameDataType {
   constructor() {
     this.name = '';
     this.dataType = DataType.Unknown;
-    this.status = DataStatus.New;
-    this.createdBy = '';
+    this.versionStatus = DataStatus.New;
+    this.versionCreatedBy = '';
     this.selected = false;
     this.action = DataAction.Add;
     this.isDataChanged = false;
   }
 
   public toString(): string {
-    return 'AttributeType: id=' + this.id + ' name=' + this.name + ' dataType=' + this.dataType + ' status=' + this.status + ' createdBy=' + this.createdBy +
-            ' updatedBy=' + this.updatedBy + ' lastUpdated=' + this.lastUpdated + ' selected=' + this.selected + ' action=' + this.action +
+    return 'AttributeType: id=' + this.id + ' name=' + this.name + ' dataType=' + this.dataType +
+            ' versionStatus=' + this.versionStatus + ' versionCreatedBy=' + this.versionCreatedBy +
+            ' versionUpdatedBy=' + this.versionUpdatedBy + ' versionLastUpdated=' + this.versionLastUpdated +
+            ' selected=' + this.selected + ' action=' + this.action +
             ' isDataChanged=' + this.isDataChanged;
   }
 }

@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {TaleType} from "../model/entity/tale-type";
 import {ResdbUrlEndpoints} from "../resdb-url-endpoints";
+import {IAuditedNameDataType} from "../model/interfaces/audited-name-data-type";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class TaleTypeService {
     return this.http.post<TaleType>(url, toBeSaved, httpOptions);
   }
 
-  delete(taleType: TaleType): Observable<TaleType> {
+    delete(taleType: IAuditedNameDataType): Observable<TaleType> {
     const url = TaleTypeService.constructUrlWithId(ResdbUrlEndpoints.TALE_TYPE_URL, taleType.id!);
     const httpOptions = {
       headers: new HttpHeaders({

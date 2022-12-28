@@ -3,7 +3,6 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {TechnologyTypeGroup} from "../model/entity/technology-type-group";
 import {ResdbUrlEndpoints} from "../resdb-url-endpoints";
 import {Observable} from "rxjs";
-import {RaceType} from "../model/entity/race-type";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +26,7 @@ export class TechnologyTypeGroupService {
     return this.http.post<TechnologyTypeGroup>(url, toBeSaved, httpOptions);
   }
 
-  delete(technologyTypeGroup: TechnologyTypeGroup): Observable<RaceType> {
+  delete(technologyTypeGroup: TechnologyTypeGroup): Observable<TechnologyTypeGroup> {
     const url = TechnologyTypeGroupService.constructUrlWithId(ResdbUrlEndpoints.TECHNOLOGY_TYPE_GROUP_URL, technologyTypeGroup.id!);
     const httpOptions = {
       headers: new HttpHeaders({

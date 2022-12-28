@@ -11,10 +11,11 @@ export class Place implements IAuditedNameDataType {
   longitude: string;
   altitude: string;
   river: River | undefined;
-  status: DataStatus;
-  createdBy: string;
-  updatedBy?: string;
-  lastUpdated?: Date;
+  versionStatus?: DataStatus;
+  versionCreatedBy?: string;
+  versionNumber?: number;
+  versionUpdatedBy?: string;
+  versionLastUpdated?: Date;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;
@@ -24,8 +25,8 @@ export class Place implements IAuditedNameDataType {
     this.latitude = '';
     this.longitude = '';
     this.altitude = '';
-    this.status = DataStatus.New;
-    this.createdBy = '';
+    this.versionStatus = DataStatus.New;
+    this.versionCreatedBy = '';
     this.selected = false;
     this.action = DataAction.Add;
     this.isDataChanged = false;
@@ -38,8 +39,8 @@ export class Place implements IAuditedNameDataType {
   public toString(): string {
     return 'Place: id=' + this.id + ' name=' + this.name +
       ' latitude=' + this.latitude + ' longitude=' + this.longitude + ' altitude=' + this.altitude +
-      ' status=' + this.status + ' createdBy=' + this.createdBy +
-      ' updatedBy=' + this.updatedBy + ' lastUpdated=' + this.lastUpdated + ' selected=' + this.selected + ' action=' + this.action +
+      ' versionStatus=' + this.versionStatus + ' versionCreatedBy=' + this.versionCreatedBy +
+      ' versionUpdatedBy=' + this.versionUpdatedBy + ' versionLastUpdated=' + this.versionLastUpdated + ' selected=' + this.selected + ' action=' + this.action +
       ' isDataChanged=' + this.isDataChanged;
   }
 }

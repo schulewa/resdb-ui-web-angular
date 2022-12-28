@@ -120,21 +120,21 @@ export class TitlesComponent implements OnInit {
   enrichAuditData(auditData: IAuditedDataType) {
     const currentUser = getCurrentUser();
     if (currentUser != null) {
-      if (!auditData.createdBy) {
-        auditData.createdBy = currentUser;
+      if (!auditData.versionCreatedBy) {
+        auditData.versionCreatedBy = currentUser;
       }
-      if (!auditData.updatedBy) {
-        auditData.updatedBy = currentUser;
+      if (!auditData.versionUpdatedBy) {
+        auditData.versionUpdatedBy = currentUser;
       }
     }
-    if (!auditData.lastUpdated) {
-      auditData.lastUpdated = new Date();
+    if (!auditData.versionLastUpdated) {
+      auditData.versionLastUpdated = new Date();
     }
   }
 
   createNewRowDatum(): any {
     const datum = new Title();
-    datum.status = DataStatus.New;
+    datum.versionStatus = DataStatus.New;
     datum.action = DataAction.Add;
     return datum;
   }
@@ -210,7 +210,7 @@ export class TitlesComponent implements OnInit {
             });
         } else if (DataAction.Update === title.action) {
           this.operationMessage = CoreOperationsMessages.UPDATE_TITLE;
-          title.status = DataStatus.Amend;
+          title.versionStatus = DataStatus.Amend;
           this.titlesService.update(title).subscribe(
             data => {
               this.httpError = undefined;
@@ -222,11 +222,11 @@ export class TitlesComponent implements OnInit {
           );
         } else if (DataAction.Delete === title.action) {
           this.operationMessage = CoreOperationsMessages.DELETE_TITLE;
-          title.status = DataStatus.Delete;
+          title.versionStatus = DataStatus.Delete;
           this.titlesService.delete(title).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: Title[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: Title[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

@@ -93,21 +93,21 @@ export abstract class AuditedEntityGridComponent<T extends IAuditedDataType> imp
   protected enrichAuditData(auditData: T) {
     const currentUser = getCurrentUser();
     if (currentUser != null) {
-      if (!auditData.createdBy) {
-        auditData.createdBy = currentUser;
+      if (!auditData.versionCreatedBy) {
+        auditData.versionCreatedBy = currentUser;
       }
-      if (!auditData.updatedBy) {
-        auditData.updatedBy = currentUser;
+      if (!auditData.versionUpdatedBy) {
+        auditData.versionUpdatedBy = currentUser;
       }
     }
-    if (!auditData.lastUpdated) {
-      auditData.lastUpdated = new Date();
+    if (!auditData.versionLastUpdated) {
+      auditData.versionLastUpdated = new Date();
     }
   }
 
   protected createNewRowDatum(): any {
     const datum = this.createNewEntity();
-    datum.status = DataStatus.New;
+    datum.versionStatus = DataStatus.New;
     datum.action = DataAction.Add;
     return datum;
   }

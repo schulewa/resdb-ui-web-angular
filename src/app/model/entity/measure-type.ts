@@ -6,10 +6,11 @@ export class MeasureType implements IAuditedNameDataType {
 
   id?: number;
   name: string;
-  status: DataStatus;
-  createdBy: string;
-  updatedBy?: string;
-  lastUpdated?: Date;
+  versionStatus?: DataStatus;
+  versionCreatedBy?: string;
+  versionNumber?: number;
+  versionUpdatedBy?: string;
+  versionLastUpdated?: Date;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;
@@ -17,15 +18,15 @@ export class MeasureType implements IAuditedNameDataType {
   constructor() {
     this.selected = false;
     this.name = '';
-    this.status = DataStatus.New;
-    this.createdBy = '';
+    this.versionStatus = DataStatus.New;
+    this.versionCreatedBy = '';
     this.action = DataAction.Add;
     this.isDataChanged = false;
   }
 
   public toString(): string {
-    return 'MeasureType: id=' + this.id + ' name=' + this.name + ' status=' + this.status + ' createdBy=' + this.createdBy +
-            ' updatedBy=' + this.updatedBy + ' lastUpdated=' + this.lastUpdated + ' selected=' + this.selected + ' action=' + this.action +
+    return 'MeasureType: id=' + this.id + ' name=' + this.name + ' versionStatus=' + this.versionStatus + ' versionCreatedBy=' + this.versionCreatedBy +
+            ' versionUpdatedBy=' + this.versionUpdatedBy + ' versionLastUpdated=' + this.versionLastUpdated + ' selected=' + this.selected + ' action=' + this.action +
             ' isDataChanged=' + this.isDataChanged;
   }
 }

@@ -52,7 +52,8 @@ export class LanguageGroupComponent extends AuditedNamedEntityGridComponent<Lang
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const languageGroup of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const languageGroup = datum as LanguageGroup;
         if (DataAction.Add === languageGroup.action) {
           this.operationMessage = CoreOperationsMessages.ADD_LANGUAGE_GROUP;
           this.enrichAuditData(languageGroup);
@@ -84,7 +85,7 @@ export class LanguageGroupComponent extends AuditedNamedEntityGridComponent<Lang
           this.languageGroupService.delete(languageGroup).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

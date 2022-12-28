@@ -56,7 +56,8 @@ export class EventTypeGroupComponent extends AuditedNamedEntityGridComponent<Eve
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const eventTypeGroup of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const eventTypeGroup = datum as EventTypeGroup;
         if (DataAction.Add === eventTypeGroup.action) {
           this.operationMessage = CoreOperationsMessages.ADD_EVENT_TYPE_GROUP;
           this.enrichAuditData(eventTypeGroup);
@@ -88,7 +89,7 @@ export class EventTypeGroupComponent extends AuditedNamedEntityGridComponent<Eve
           this.eventTypeGroupService.delete(eventTypeGroup).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

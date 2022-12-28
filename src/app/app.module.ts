@@ -48,6 +48,9 @@ import { YesNoCellRendererComponent } from './cell-renderers/yes-no-cell-rendere
 import { ThumbnailCellRendererComponent } from './cell-renderers/thumbnail-cell-renderer/thumbnail-cell-renderer.component';
 import { RoleComponent } from './role/role.component';
 import {AuthInterceptor} from "./interceptors/HttpInterceptor";
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { AbstractUserComponent } from './abstract-user/abstract-user.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +92,8 @@ import {AuthInterceptor} from "./interceptors/HttpInterceptor";
     YesNoCellRendererComponent,
     ThumbnailCellRendererComponent,
     RoleComponent,
+    EditUserComponent,
+    UserDetailComponent,
   ],
   imports: [
     BrowserModule,

@@ -52,7 +52,8 @@ export class ImageTypeComponent extends AuditedNamedEntityGridComponent<ImageTyp
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const imageType of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const imageType = datum as ImageType;
         if (DataAction.Add === imageType.action) {
           this.operationMessage = CoreOperationsMessages.ADD_IMAGE_TYPE;
           this.enrichAuditData(imageType);
@@ -84,7 +85,7 @@ export class ImageTypeComponent extends AuditedNamedEntityGridComponent<ImageTyp
           this.imageTypeService.delete(imageType).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

@@ -53,7 +53,8 @@ export class DeityTypeComponent extends AuditedNamedEntityGridComponent<DeityTyp
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const deityType of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const deityType = datum as DeityType;
         if (DataAction.Add === deityType.action) {
           this.enrichAuditData(deityType);
           this.deityTypeService.add(deityType).subscribe(
@@ -84,7 +85,7 @@ export class DeityTypeComponent extends AuditedNamedEntityGridComponent<DeityTyp
           this.deityTypeService.delete(deityType).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

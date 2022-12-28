@@ -55,7 +55,7 @@ export class CalendarTypeComponent extends AuditedNamedEntityGridComponent<Calen
       for (const calendarType of toBeSaved) {
         if (DataAction.Add === calendarType.action) {
           this.enrichAuditData(calendarType);
-          this.calendarTypeService.add(calendarType).subscribe(
+          this.calendarTypeService.add(calendarType as CalendarType).subscribe(
             data => {
               this.httpError = undefined;
               this.updateGrid(data);
@@ -66,8 +66,8 @@ export class CalendarTypeComponent extends AuditedNamedEntityGridComponent<Calen
               this.operationMessage = CoreOperationsMessages.ADD_CALENDAR_TYPE;
             });
         } else if (DataAction.Update === calendarType.action) {
-          calendarType.status = DataStatus.Amend;
-          this.calendarTypeService.update(calendarType).subscribe(
+          calendarType.versionStatus = DataStatus.Amend;
+          this.calendarTypeService.update(calendarType as CalendarType).subscribe(
             data => {
               this.httpError = undefined;
               this.updateGrid(data);
@@ -79,12 +79,12 @@ export class CalendarTypeComponent extends AuditedNamedEntityGridComponent<Calen
             }
           );
         } else if (DataAction.Delete === calendarType.action) {
-          calendarType.status = DataStatus.Delete;
-          this.calendarTypeService.delete(calendarType).subscribe(
+          calendarType.versionStatus = DataStatus.Delete;
+          this.calendarTypeService.delete(calendarType as CalendarType).subscribe(
             data => {
               console.log('Calendar type ' + calendarType.action + 'ed - result=' + data);
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

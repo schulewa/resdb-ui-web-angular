@@ -46,7 +46,8 @@ export class PublicationTypeComponent extends AuditedNamedEntityGridComponent<Pu
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const publicationType of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const publicationType = datum as PublicationType;
         if (DataAction.Add === publicationType.action) {
           this.operationMessage = CoreOperationsMessages.ADD_PUBLICATION_TYPE;
           this.enrichAuditData(publicationType);
@@ -60,7 +61,7 @@ export class PublicationTypeComponent extends AuditedNamedEntityGridComponent<Pu
             });
         } else if (DataAction.Update === publicationType.action) {
           this.operationMessage = CoreOperationsMessages.UPDATE_PUBLICATION_TYPE;
-          publicationType.status = DataStatus.Amend;
+          publicationType.versionStatus = DataStatus.Amend;
           this.publicationTypeService.update(publicationType).subscribe(
             data => {
               this.httpError = undefined;
@@ -72,11 +73,11 @@ export class PublicationTypeComponent extends AuditedNamedEntityGridComponent<Pu
           );
         } else if (DataAction.Delete === publicationType.action) {
           this.operationMessage = CoreOperationsMessages.DELETE_PUBLICATION_TYPE;
-          publicationType.status = DataStatus.Delete;
+          publicationType.versionStatus = DataStatus.Delete;
           this.publicationTypeService.delete(publicationType).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

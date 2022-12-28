@@ -49,7 +49,8 @@ export class RaceTypeComponent extends AuditedNamedEntityGridComponent<RaceType>
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const raceType of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const raceType = datum as RaceType;
         if (DataAction.Add === raceType.action) {
           this.operationMessage = CoreOperationsMessages.ADD_RACE_TYPE;
           this.enrichAuditData(raceType);
@@ -63,7 +64,7 @@ export class RaceTypeComponent extends AuditedNamedEntityGridComponent<RaceType>
             });
         } else if (DataAction.Update === raceType.action) {
           this.operationMessage = CoreOperationsMessages.UPDATE_RACE_TYPE;
-          raceType.status = DataStatus.Amend;
+          raceType.versionStatus = DataStatus.Amend;
           this.raceTypeService.update(raceType).subscribe(
             data => {
               this.httpError = undefined;
@@ -75,11 +76,11 @@ export class RaceTypeComponent extends AuditedNamedEntityGridComponent<RaceType>
           );
         } else if (DataAction.Delete === raceType.action) {
           this.operationMessage = CoreOperationsMessages.DELETE_RACE_TYPE;
-          raceType.status = DataStatus.Delete;
+          raceType.versionStatus = DataStatus.Delete;
           this.raceTypeService.delete(raceType).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

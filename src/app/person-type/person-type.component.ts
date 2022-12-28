@@ -46,7 +46,8 @@ export class PersonTypeComponent extends AuditedNamedEntityGridComponent<PersonT
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const personType of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const personType = datum as PersonType;
         if (DataAction.Add === personType.action) {
           this.operationMessage = CoreOperationsMessages.ADD_PERSON_TYPE;
           this.enrichAuditData(personType);
@@ -60,7 +61,7 @@ export class PersonTypeComponent extends AuditedNamedEntityGridComponent<PersonT
             });
         } else if (DataAction.Update === personType.action) {
           this.operationMessage = CoreOperationsMessages.UPDATE_PERSON_TYPE;
-          personType.status = DataStatus.Amend;
+          personType.versionStatus = DataStatus.Amend;
           this.personTypeService.update(personType).subscribe(
             data => {
               this.httpError = undefined;
@@ -72,11 +73,11 @@ export class PersonTypeComponent extends AuditedNamedEntityGridComponent<PersonT
           );
         } else if (DataAction.Delete === personType.action) {
           this.operationMessage = CoreOperationsMessages.DELETE_PERSON_TYPE;
-          personType.status = DataStatus.Delete;
+          personType.versionStatus = DataStatus.Delete;
           this.personTypeService.delete(personType).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

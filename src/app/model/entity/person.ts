@@ -21,10 +21,11 @@ export class Person implements IAuditedDataType {
   birthPlace: Place | undefined;
   deathPlace: Place | undefined;
 
-  status: DataStatus;
-  createdBy: string;
-  updatedBy?: string;
-  lastUpdated?: Date;
+  versionStatus?: DataStatus;
+  versionCreatedBy?: string;
+  versionNumber?: number;
+  versionUpdatedBy?: string;
+  versionLastUpdated?: Date;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;
@@ -40,8 +41,8 @@ export class Person implements IAuditedDataType {
     this.gender = '';
     this.dateOfBirth = Constants.UNSET_HISTORICAL_DATE_VALUE;
     this.dateOfDeath = Constants.UNSET_HISTORICAL_DATE_VALUE;
-    this.status = DataStatus.New;
-    this.createdBy = '';
+    this.versionStatus = DataStatus.New;
+    this.versionCreatedBy = '';
     this.selected = false;
     this.action = DataAction.Add;
     this.isDataChanged = false;

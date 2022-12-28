@@ -52,7 +52,8 @@ export class AddressTypeComponent extends AuditedNamedEntityGridComponent<Addres
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const addressType of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const addressType = datum as AddressType;
         if (DataAction.Add === addressType.action) {
           this.operationMessage = CoreOperationsMessages.ADD_ADDRESS_TYPE;
           this.enrichAuditData(addressType);
@@ -68,7 +69,7 @@ export class AddressTypeComponent extends AuditedNamedEntityGridComponent<Addres
             });
         } else if (DataAction.Update === addressType.action) {
           this.operationMessage = CoreOperationsMessages.UPDATE_ADDRESS_TYPE;
-          addressType.status = DataStatus.Amend;
+          addressType.versionStatus = DataStatus.Amend;
           this.addressTypeService.update(addressType).subscribe(
             data => {
               console.log('Address type ' + addressType.action + 'ed - result=' + data);
@@ -83,12 +84,12 @@ export class AddressTypeComponent extends AuditedNamedEntityGridComponent<Addres
 
         } else if (DataAction.Delete === addressType.action) {
           this.operationMessage = CoreOperationsMessages.DELETE_ADDRESS_TYPE;
-          addressType.status = DataStatus.Delete;
+          addressType.versionStatus = DataStatus.Delete;
           this.addressTypeService.delete(addressType).subscribe(
             data => {
               console.log('Address type ' + addressType.action + 'ed - result=' + data);
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               // this.updateGrid(remainingRows);
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
