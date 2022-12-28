@@ -24,8 +24,8 @@ const routes: Routes = [
   { path: 'measuretypes', component: MeasureTypeComponent },
   { path: 'places', component: PlaceComponent },
   { path: 'simple-refdata', component: SimpleRefdataComponent },
-  {path: 'users', component: UserComponent},
-  {path: 'usergroups', component: UserGroupComponent},
+  { path: 'users', component: UserComponent },
+  { path: 'usergroups', component: UserGroupComponent },
   { path: 'titles', component: TitlesComponent }
 ];
 

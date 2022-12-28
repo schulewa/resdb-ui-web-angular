@@ -52,7 +52,8 @@ export class RoleComponent extends AuditedNamedEntityGridComponent<Role> impleme
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const role of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const role = datum as Role;
         if (DataAction.Add === role.action) {
           this.operationMessage = CoreOperationsMessages.ADD_ROLE;
           this.enrichAuditData(role);
@@ -68,7 +69,7 @@ export class RoleComponent extends AuditedNamedEntityGridComponent<Role> impleme
             });
         } else if (DataAction.Update === role.action) {
           this.operationMessage = CoreOperationsMessages.UPDATE_ROLE;
-          role.status = DataStatus.Amend;
+          role.versionStatus = DataStatus.Amend;
           this.roleService.update(role).subscribe(
             data => {
               console.log('Role ' + role.action + 'ed - result=' + data);
@@ -83,12 +84,12 @@ export class RoleComponent extends AuditedNamedEntityGridComponent<Role> impleme
 
         } else if (DataAction.Delete === role.action) {
           this.operationMessage = CoreOperationsMessages.DELETE_ROLE;
-          role.status = DataStatus.Delete;
+          role.versionStatus = DataStatus.Delete;
           this.roleService.delete(role).subscribe(
             data => {
               console.log('Role ' + role.action + 'ed - result=' + data);
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               // this.updateGrid(remainingRows);
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();

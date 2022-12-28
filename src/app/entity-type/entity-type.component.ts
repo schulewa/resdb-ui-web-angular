@@ -52,7 +52,8 @@ export class EntityTypeComponent extends AuditedNamedEntityGridComponent<EntityT
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const entityType of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const entityType = datum as EntityType;
         if (DataAction.Add === entityType.action) {
           this.enrichAuditData(entityType);
           this.entityTypeService.add(entityType).subscribe(
@@ -83,7 +84,7 @@ export class EntityTypeComponent extends AuditedNamedEntityGridComponent<EntityT
           this.entityTypeService.delete(entityType).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

@@ -30,7 +30,7 @@ export abstract class AbstractPersonComponent implements OnInit {
   protected httpError: HttpErrorResponse | undefined;
   protected operationMessage: string = '';
 
-  protected person: Person | undefined
+  protected person: Person | undefined;
   protected personForm: FormGroup | undefined;
 
   protected filteredTitles: PersonTitle[] = [];
@@ -74,6 +74,7 @@ export abstract class AbstractPersonComponent implements OnInit {
   protected allDatesLabelValues: DateLabelValue[] = [];
 
   constructor(protected router: Router, protected fb: FormBuilder, protected titlesService: TitlesService) {
+    console.log('app-abstract-person: constructor');
     this.titlesColumnDefs = this.createTitlesColumnDefs();
     this.titlesGridOptions = this.createTitlesGridOptions();
     //
@@ -98,7 +99,11 @@ export abstract class AbstractPersonComponent implements OnInit {
   // apply all values from Person that dod not rely on GridApi such as titlesGridApi
   // as onGridReady is called after ngOnInit
   protected applyPerson(existingPerson: Person) {
-    // console.log('app-abstract-person.applyPerson: existingPerson.titles length=' + existingPerson.titles.length);
+    console.log('app-abstract-person: applyPerson');
+    let titlesLen = 0;
+    if (existingPerson && existingPerson.titles)
+      titlesLen = existingPerson.titles.length;
+    console.log('app-abstract-person.applyPerson: existingPerson.titles length=' + titlesLen);
       this.getPersonForm().controls['firstName'].patchValue(existingPerson.firstName, { emitEvent: false });
       this.getPersonForm().controls['middleName'].patchValue(existingPerson.middleName, { emitEvent: false });
       this.getPersonForm().controls['familyName'].patchValue(existingPerson.familyName, { emitEvent: false });
@@ -111,9 +116,9 @@ export abstract class AbstractPersonComponent implements OnInit {
       this.getPersonForm().controls['dateOfBirthMonth'].patchValue(existingPerson.dateOfBirth?.month)
       this.getPersonForm().controls['dateOfBirthYear'].patchValue(existingPerson.dateOfBirth?.year)
 
-    this.getPersonForm().controls['dateOfDeathDayOfMonth'].patchValue(existingPerson.dateOfDeath?.day)
-    this.getPersonForm().controls['dateOfDeathMonth'].patchValue(existingPerson.dateOfDeath?.month)
-    this.getPersonForm().controls['dateOfDeathYear'].patchValue(existingPerson.dateOfDeath?.year)
+      this.getPersonForm().controls['dateOfDeathDayOfMonth'].patchValue(existingPerson.dateOfDeath?.day)
+      this.getPersonForm().controls['dateOfDeathMonth'].patchValue(existingPerson.dateOfDeath?.month)
+      this.getPersonForm().controls['dateOfDeathYear'].patchValue(existingPerson.dateOfDeath?.year)
 
     if (existingPerson.birthPlace) {
       this.getPersonForm().controls['birthPlaceName'].patchValue(existingPerson.birthPlace.name)
@@ -320,6 +325,8 @@ export abstract class AbstractPersonComponent implements OnInit {
   }
 
   protected filterTitles(): PersonTitle[] {
+    console.log('app-abstract-person: filterTitles');
+
     return [];
     // return this.allTitles.filter(title =>
     //   this.gender !== undefined && title.appliesTo === this.gender &&
@@ -389,7 +396,7 @@ export abstract class AbstractPersonComponent implements OnInit {
         //   title.selected = personTitle.title.selected;
         //   title.action = personTitle.title.action;
         //   title.isDataChanged = personTitle.title.isDataChanged;
-        //   console.log('app-abstract-person.getTitles: constructed Title = ' + title.title);
+        //   console-person-maint.log('app-abstract-person.getTitles: constructed Title = ' + title.title);
         //   this.selectedTitles.push(title);
         // }
       }
@@ -445,7 +452,7 @@ export abstract class AbstractPersonComponent implements OnInit {
   }
 
   protected initGenders() {
-    console.log('app-abstract-person: calling initGenders');
+    console.log('app-abstract-person: initGenders');
     const thisRef = this;
     this.gender = new Gender();
     this.allGenders = [];
@@ -459,6 +466,7 @@ export abstract class AbstractPersonComponent implements OnInit {
   }
 
   protected initPersonForm() {
+    console.log('app-abstract-person: initPersonForm')
     this.personForm = this.fb.group({
       firstName: [null, [Validators.max(30), Validators.required]],
       middleName: [null, Validators.max(30)],
@@ -484,7 +492,7 @@ export abstract class AbstractPersonComponent implements OnInit {
   }
 
   protected initTitles() {
-    console.log('app-abstract-person: calling initTitles');
+    console.log('app-abstract-person: initTitles');
     this.titlesService.findAll().subscribe(
       data => {
         this.allTitles = data;
@@ -498,6 +506,7 @@ export abstract class AbstractPersonComponent implements OnInit {
   }
 
   protected initTitleTypes() {
+    console.log('app-abstract-person: initTitleTypes');
     const titleTypes = [];
     titleTypes.push(TitleType.Prefix, TitleType.Suffix);
     const keys = Object.keys(TitleType); // Prefix, Suffix
@@ -638,7 +647,8 @@ export abstract class AbstractPersonComponent implements OnInit {
   }
 
   protected reloadRoles() {
-    // console.log('app-abstract-person: reloadRoles - person roles length = ' + this.person?.roles?.length);
+    let rolesLen = (this.person && this.person.roles) ? this.person?.roles?.length : 0;
+    console.log('app-abstract-person: reloadRoles - person roles length = ' + rolesLen);
     // if (this.person?.roles && this.person?.roles?.length > 0) {
 
       // this.selectedTitles = []
@@ -653,13 +663,14 @@ export abstract class AbstractPersonComponent implements OnInit {
       //   }
       // }
       // this.selectedTitles = this.person?.titles?.map((title) => title?.title);
-      console.log('applyPerson: selectedRoles=' + this.selectedRoles);
+      console.log('reloadRoles: selectedRoles=' + this.selectedRoles);
       this.getPersonForm().controls['roles'].patchValue(this.selectedRoles, {emitEvent: false});
     // }
   }
 
   protected reloadTitles() {
-    console.log('app-abstract-person: reloadTitles - person titles length = ' + this.person?.titles?.length);
+    let titlesLen = (this.person && this.person.titles) ? this.person?.titles?.length : 0;
+    console.log('app-abstract-person: reloadTitles - person titles length = ' + titlesLen);
     if (this.person?.titles && this.person?.titles?.length > 0) {
         // this.selectedTitles = []
         // for (let i=0; i < this.person.titles.length; i++) {

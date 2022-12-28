@@ -92,15 +92,15 @@ export abstract class AuditedNamedEntityGridComponent<T extends IAuditedNameData
   protected enrichAuditData(auditData: IAuditedNameDataType) {
     const currentUser = getCurrentUser();
     if (currentUser != null) {
-      if (!auditData.createdBy) {
-        auditData.createdBy = currentUser;
+      if (!auditData.versionCreatedBy) {
+        auditData.versionCreatedBy = currentUser;
       }
       if (DataAction.Update == auditData.action || DataAction.Delete == auditData.action) {
-        if (!auditData.updatedBy) {
-          auditData.updatedBy = currentUser;
+        if (!auditData.versionUpdatedBy) {
+          auditData.versionUpdatedBy = currentUser;
         }
-        if (!auditData.lastUpdated) {
-          auditData.lastUpdated = new Date();
+        if (!auditData.versionLastUpdated) {
+          auditData.versionLastUpdated = new Date();
         }
       }
     }
@@ -108,7 +108,7 @@ export abstract class AuditedNamedEntityGridComponent<T extends IAuditedNameData
 
   protected createNewRowDatum(): any {
     const datum = this.createNewEntity();
-    datum.status = DataStatus.New;
+    datum.versionStatus = DataStatus.New;
     datum.action = DataAction.Add;
     return datum;
   }

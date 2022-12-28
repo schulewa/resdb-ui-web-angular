@@ -21,7 +21,7 @@ export class PersonService {
   //   return this.http.get<Person[]>(url).pipe(
   //     tap((receivedData: Person[]) => {
   //       receivedData.forEach(person =>
-  //         console.log('PersonService.findAll: received person=' + Person.toString(person))
+  //         console-person-maint.log('PersonService.findAll: received person=' + Person.toString(person))
   //       );
   //     }),
   //     catchError(this.handleError)
@@ -63,7 +63,7 @@ export class PersonService {
       })
     };
     return this.http.put(url, toBeSaved, httpOptions).pipe(
-      // tap((receivedData: Person) => console.log(receivedData)),
+      // tap((receivedData: Person) => console-person-maint.log(receivedData)),
       catchError(this.handleError)
     );
   }

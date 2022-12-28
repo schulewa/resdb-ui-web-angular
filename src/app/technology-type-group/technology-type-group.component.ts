@@ -55,7 +55,8 @@ export class TechnologyTypeGroupComponent extends AuditedNamedEntityGridComponen
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const technologyTypeGroup of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const technologyTypeGroup = datum as TechnologyTypeGroup;
         if (DataAction.Add === technologyTypeGroup.action) {
           this.operationMessage = CoreOperationsMessages.ADD_TECHNOLOGY_TYPE_GROUP;
           this.enrichAuditData(technologyTypeGroup);
@@ -69,7 +70,7 @@ export class TechnologyTypeGroupComponent extends AuditedNamedEntityGridComponen
             });
         } else if (DataAction.Update === technologyTypeGroup.action) {
           this.operationMessage = CoreOperationsMessages.UPDATE_TECHNOLOGY_TYPE_GROUP;
-          technologyTypeGroup.status = DataStatus.Amend;
+          technologyTypeGroup.versionStatus = DataStatus.Amend;
           this.technologyTypeGroupService.update(technologyTypeGroup).subscribe(
             data => {
               this.httpError = undefined;
@@ -81,11 +82,11 @@ export class TechnologyTypeGroupComponent extends AuditedNamedEntityGridComponen
           );
         } else if (DataAction.Delete === technologyTypeGroup.action) {
           this.operationMessage = CoreOperationsMessages.DELETE_TECHNOLOGY_TYPE_GROUP;
-          technologyTypeGroup.status = DataStatus.Delete;
+          technologyTypeGroup.versionStatus = DataStatus.Delete;
           this.technologyTypeGroupService.delete(technologyTypeGroup).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

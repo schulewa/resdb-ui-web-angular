@@ -2,11 +2,12 @@ import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AuditedEntityGridComponent} from "../audited-entity-grid.component";
 import {User} from "../model/entity/user";
 import {Router} from "@angular/router";
-import {UserService} from "../user.service";
+import {UserService} from "./user.service";
 import {CoreOperationsMessages} from "../core-operations-messages";
 import {DataAction} from "../model/enums/data-action";
 import {DataStatus} from "../model/enums/data-status";
 import {DateFormatters} from "../formatters/date-formatters";
+import {DataMode} from "../model/enums/data-mode";
 
 @Component({
   selector: 'app-user',
@@ -14,6 +15,9 @@ import {DateFormatters} from "../formatters/date-formatters";
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent extends AuditedEntityGridComponent<User> implements OnInit, OnChanges {
+
+  protected showGrid: boolean = true;
+  protected dataMode: DataMode | undefined;
 
   constructor(private router: Router,
               private userService: UserService) {
@@ -144,5 +148,38 @@ export class UserComponent extends AuditedEntityGridComponent<User> implements O
   protected createNewEntity(): User {
     return new User();
   }
+
+  addUser() {
+    console.log('TODO: redirect to /user but with null User as Input');
+    this.showGrid = false;
+    this.dataMode = DataMode.Add;
+  }
+
+  editUser() {
+    console.log('TODO: redirect to /user-detail but with the User as Input');
+    this.showGrid = false;
+    this.dataMode = DataMode.Update;
+    // TODO set variables for EDIT in user-detail.component.html/.ts to this.selectedRow
+  }
+
+  isAddMode(): boolean {
+    return DataMode.Add === this.dataMode;
+  }
+
+  isEditMode(): boolean {
+    return DataMode.Update === this.dataMode;
+  }
+
+  protected override onSelectionChanged(event: any) {
+    const rowCount = event.api.getSelectedNodes().length;
+    console.log('UserComponent.onSelectionChanged: ' + rowCount + ' rows selected');
+    const selectedRows = event.api.getSelectedNodes();
+    if (selectedRows && selectedRows.length === 1) {
+      this.selectedRow = selectedRows[0].data;
+    } else {
+      this.selectedRow = undefined;
+    }
+  }
+
 }
 

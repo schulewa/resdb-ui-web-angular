@@ -53,7 +53,8 @@ export class HierarchyTypeComponent extends AuditedNamedEntityGridComponent<Hier
     const toBeSaved = this.rowData.filter(row => row.action != null);
 
     if (toBeSaved) {
-      for (const hierarchyType of toBeSaved) {
+      for (const datum of toBeSaved) {
+        const hierarchyType = datum as HierarchyType;
         if (DataAction.Add === hierarchyType.action) {
           this.operationMessage = CoreOperationsMessages.ADD_HIERARCHY_TYPE;
           this.enrichAuditData(hierarchyType);
@@ -85,7 +86,7 @@ export class HierarchyTypeComponent extends AuditedNamedEntityGridComponent<Hier
           this.hierarchyTypeService.delete(hierarchyType).subscribe(
             data => {
               this.httpError = undefined;
-              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: IAuditedNameDataType[] = this.rowData.filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },

@@ -4,6 +4,7 @@ import {FormBuilder} from "@angular/forms";
 import {Router} from "@angular/router";
 import {TitlesService} from "../titles/titles.service";
 import {AbstractPersonComponent} from "../abstract-person/abstract-person.component";
+import {CoreOperationsMessages} from "../core-operations-messages";
 
 @Component({
   selector: 'app-edit-person',
@@ -29,7 +30,7 @@ export class EditPersonComponent extends AbstractPersonComponent implements OnIn
     if (this.person) {
       this.applyPerson(this.person);
     }
-    // console.log('app-edit-person: ngOnInit - Person.gender=' + this.person?.gender);
+    // console-person-maint.log('app-edit-person: ngOnInit - Person.gender=' + this.person?.gender);
     //
     // this.getPersonForm()!.controls['gender'].setValue(this.person?.gender, {onlySelf: true});
 

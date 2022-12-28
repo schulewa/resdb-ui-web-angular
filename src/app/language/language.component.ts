@@ -144,15 +144,15 @@ export class LanguageComponent implements OnInit { //extends AuditedNamedEntityG
   protected enrichAuditData(auditData: IAuditedNameDataType) {
     const currentUser = getCurrentUser();
     if (currentUser != null) {
-      if (!auditData.createdBy) {
-        auditData.createdBy = currentUser;
+      if (!auditData.versionCreatedBy) {
+        auditData.versionCreatedBy = currentUser;
       }
-      if (!auditData.updatedBy) {
-        auditData.updatedBy = currentUser;
+      if (!auditData.versionUpdatedBy) {
+        auditData.versionUpdatedBy = currentUser;
       }
     }
-    if (!auditData.lastUpdated) {
-      auditData.lastUpdated = new Date();
+    if (!auditData.versionLastUpdated) {
+      auditData.versionLastUpdated = new Date();
     }
   }
 

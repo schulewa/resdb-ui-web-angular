@@ -12,10 +12,11 @@ export class Title implements IAuditedDataType {
   description: string;
   titleType: TitleType | undefined;
   appliesTo: Gender | undefined; // CodeLabel;
-  status: DataStatus;
-  createdBy: string;
-  updatedBy?: string;
-  lastUpdated?: Date;
+  versionStatus: DataStatus;
+  versionCreatedBy: string;
+  versionNumber?: number;
+  versionUpdatedBy?: string;
+  versionLastUpdated?: Date;
   selected: boolean;
   action: DataAction;
   isDataChanged: boolean;
@@ -23,8 +24,8 @@ export class Title implements IAuditedDataType {
   constructor() {
     this.title = '';
     this.description = '';
-    this.status = DataStatus.New;
-    this.createdBy = '';
+    this.versionStatus = DataStatus.New;
+    this.versionCreatedBy = '';
     this.selected = false;
     this.action = DataAction.Add;
     this.isDataChanged = false;
@@ -37,10 +38,10 @@ export class Title implements IAuditedDataType {
       title.description = personTitle!.title!.description;
       title.titleType = personTitle!.title!.titleType;
       title.appliesTo = personTitle!.title!.appliesTo;
-      title.status = personTitle!.title!.status;
-      title.createdBy = personTitle!.title!.createdBy;
-      title.updatedBy = personTitle!.title!.updatedBy;
-      title.lastUpdated = personTitle!.title!.lastUpdated;
+      title.versionStatus = personTitle!.title!.versionStatus;
+      title.versionCreatedBy = personTitle!.title!.versionCreatedBy;
+      title.versionUpdatedBy = personTitle!.title!.versionUpdatedBy;
+      title.versionLastUpdated = personTitle!.title!.versionLastUpdated;
       title.selected = personTitle!.title!.selected;
       title.action = personTitle!.title!.action;
       title.isDataChanged = personTitle!.title!.isDataChanged;
@@ -50,8 +51,8 @@ export class Title implements IAuditedDataType {
   public toString(): string {
     return 'Title: id=' + this.id + ' title=' + this.title + ' description=' + this.description + ' titleType=' + this.titleType +
       ' appliesTo=' + this.appliesTo +
-      ' status=' + this.status + ' createdBy=' + this.createdBy +
-      ' updatedBy=' + this.updatedBy + ' lastUpdated=' + this.lastUpdated + ' selected=' + this.selected + ' action=' + this.action +
+      ' versionStatus=' + this.versionStatus + ' versionCreatedBy=' + this.versionCreatedBy +
+      ' versionUpdatedBy=' + this.versionUpdatedBy + ' versionLastUpdated=' + this.versionLastUpdated + ' selected=' + this.selected + ' action=' + this.action +
       ' isDataChanged=' + this.isDataChanged;
   }
 }

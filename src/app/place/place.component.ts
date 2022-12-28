@@ -96,7 +96,7 @@ export class PlaceComponent extends AuditedNamedEntityGridComponent<Place> imple
               this.operationMessage = CoreOperationsMessages.ADD_PLACE;
             });
         } else if (DataAction.Update === place.action) {
-          place.status = DataStatus.Amend;
+          place.versionStatus = DataStatus.Amend;
           this.placeService.update(place as Place).subscribe(
             data => {
               this.httpError = undefined;
@@ -109,12 +109,12 @@ export class PlaceComponent extends AuditedNamedEntityGridComponent<Place> imple
             }
           );
         } else if (DataAction.Delete === place.action) {
-          place.status = DataStatus.Delete;
+          place.versionStatus = DataStatus.Delete;
           this.placeService.delete(place as Place).subscribe(
             data => {
               console.log('Place ' + place.action + 'ed - result=' + data);
               this.httpError = undefined;
-              const remainingRows: Place[] = (this.rowData as Place[]).filter(r => (this.liveStatuses.includes(r.status)));
+              const remainingRows: Place[] = (this.rowData as Place[]).filter(r => (this.liveStatuses.includes(r.versionStatus!)));
               this.gridApi!.setRowData(remainingRows);
               this.gridApi!.refreshCells();
             },
